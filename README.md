@@ -7,7 +7,7 @@ of Atoms
 The Makefiles work on a computer running Ubuntu 13.04 using gfortran
 from GCC 4.7.3.  The resulting executable has been shown to run to
 completion for one test case.  It has not been tested with any other
-crystal datam, on any other computer or with any other compiler.
+crystal data, on any other computer or with any other compiler.
 
 This source code is being placed on GitHub as a courtesy.  I will
 provide no support of any kind for the use of this software.  I will
