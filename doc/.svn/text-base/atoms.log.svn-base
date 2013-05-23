@@ -1,0 +1,154 @@
+This is TeX, Version 3.14159 (Web2C 7.2) (format=tex 1999.1.20)  18 MAY 1999 09:16
+**\input /tmp/txi2d.10126/atoms.texi
+(/tmp/txi2d.10126/atoms.texi (/usr/share/texmf/tex/texinfo/texinfo.tex
+Loading texinfo [version 1998-11-06]: Basics,
+\bindingoffset=\dimen16
+\normaloffset=\dimen17
+\pagewidth=\dimen18
+\pageheight=\dimen19
+\outerhsize=\dimen20
+\outervsize=\dimen21
+\cornerlong=\dimen22
+\cornerthick=\dimen23
+\topandbottommargin=\dimen24
+\headlinebox=\box16
+\footlinebox=\box17
+\margin=\insert252
+\EMsimple=\toks12
+\singlespaceskip=\skip18
+\groupinvalidhelp=\toks13
+\mil=\dimen25
+\exdentamount=\skip19
+\inmarginspacing=\skip20
+ fonts,
+\sffam=\fam8
+\mainmagstep=\count26
+\fontdepth=\count27
+ page headings,
+\titlepagetopglue=\skip21
+\titlepagebottomglue=\skip22
+\evenheadline=\toks14
+\oddheadline=\toks15
+\evenfootline=\toks16
+\oddfootline=\toks17
+ tables,
+\tableindent=\dimen26
+\itemindent=\dimen27
+\itemmargin=\dimen28
+\itemmax=\dimen29
+\itemno=\count28
+\multitableparskip=\skip23
+\multitableparindent=\skip24
+\multitablecolspace=\dimen30
+\multitablelinespace=\skip25
+\colcount=\count29
+
+indexing,
+\secondaryindent=\skip26
+\partialpage=\box18
+\doublecolumnhsize=\dimen31
+ sectioning,
+\chapno=\count30
+\secno=\count31
+\subsecno=\count32
+\subsubsecno=\count33
+\appendixno=\count34
+\absseclevel=\count35
+\secbase=\count36
+\chapheadingskip=\skip27
+\secheadingskip=\skip28
+\subsecheadingskip=\skip29
+ toc,
+\tocfile=\write0
+\contentsrightmargin=\skip30
+\savepageno=\count37
+\lastnegativepageno=\count38
+\shortappendixwidth=\dimen32
+\tocindent=\dimen33
+ environments,
+\dblarrowbox=\box19
+\longdblarrowbox=\box20
+\pushcharbox=\box21
+\bullbox=\box22
+\equivbox=\box23
+\errorbox=\box24
+\lispnarrowing=\skip31
+\envskipamount=\skip32
+\circthick=\dimen34
+\cartouter=\dimen35
+\cartinner=\dimen36
+\normbskip=\skip33
+\normpskip=\skip34
+\normlskip=\skip35
+\lskip=\skip36
+\rskip=\skip37
+ defuns,
+\defbodyindent=\skip38
+\defargsindent=\skip39
+\deftypemargin=\skip40
+\deflastargmargin=\skip41
+\parencount=\count39
+ macros,
+\macscribble=\write1
+\paramno=\count40
+\macname=\toks18
+ cross references,
+\auxfile=\write2
+\footnoteno=\count41
+
+(/usr/share/texmf/tex/plain/dvips/epsf.tex
+This is `epsf.tex' v2.7 <25 October 1996>
+\epsffilein=\read0
+\epsfframemargin=\dimen37
+\epsfframethickness=\dimen38
+\epsfrsize=\dimen39
+\epsftmp=\dimen40
+\epsftsize=\dimen41
+\epsfxsize=\dimen42
+\epsfysize=\dimen43
+\pspoints=\dimen44
+)
+\noepsfhelp=\toks19
+ paper sizes,
+\defaultparindent=\dimen45
+ and turning on texinfo input format.) (atoms.aux)
+@cpindfile=@write3
+@fnindfile=@write4
+@vrindfile=@write5
+@tpindfile=@write6
+@kyindfile=@write7
+@pgindfile=@write8
+ [1
+\openout2 = `atoms.aux'.
+
+\openout3 = `atoms.cp'.
+
+\openout4 = `atoms.fn'.
+
+\openout5 = `atoms.vr'.
+
+\openout6 = `atoms.tp'.
+
+\openout7 = `atoms.ky'.
+
+\openout8 = `atoms.pg'.
+
+] [2]
+Chapter 1
+\openout0 = `atoms.toc'.
+
+ [1] Chapter 2 [2] [3] [4] [5] [6] [7] [8] [9] Chapter 3 [10] [11]
+[12] [13] [14] Chapter 4 [15] [16] Chapter 5 [17] [18] [19] Chapter 6 [20]
+[21] [22] [23] Appendix @char 65 [24] [25] [26] [27] [28] [29] [30] [31]
+[32] [33] Appendix @char 66 [34] [35] [36] [37] [38] [39] [40] [41] [42]
+[43] [44] [45] (atoms.toc) [-1] (atoms.toc [-2]) [-3] ) 
+Here is how much of TeX's memory you used:
+ 1269 strings out of 13014
+ 14773 string characters out of 97272
+ 41451 words of memory out of 263001
+ 2155 multiletter control sequences out of 10000+0
+ 30088 words of font info for 104 fonts, out of 200000 for 1000
+ 19 hyphenation exceptions out of 1000
+ 12i,6n,11p,264b,271s stack positions out of 300i,100n,500p,30000b,4000s
+
+Output written on atoms.dvi (50 pages, 141256 bytes).

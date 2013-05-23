@@ -1,0 +1,12 @@
+c
+c           title pbtio3 n&k,10k,a=3.885,c=4.139
+c           space  p 4 m m    
+c           a=3.885   c=4.139  
+c           rmax=10 core=ti
+c           atom
+c           ! at.type  x        y       z      tag
+c              pb     0.0      0.0     0.0     
+c              ti     0.5      0.5     0.5377  
+c              o      0.5      0.5     0.1118   o1
+c              o      0.0      0.5     0.6174   o2
+c           -------------------------------------------------

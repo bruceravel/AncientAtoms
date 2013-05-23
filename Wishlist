@@ -1,0 +1,95 @@
+This is a wishlist for the next major version of Atoms.
+
+--  All space groups mentioned in 1989 edition of ITXC.
+
+{ from matt
+--  bigger iat
+
+--  accept # as a comment character 
+
+--  allow an end card (what does "----" do?) 
+
+--  change the default rmax to max(2*rnn,6).
+
+--  xyz and other visualization formats, this requires a much larger
+    cluster
+
+--  consider a bounding box
+             xbox  xmin xmax
+             ybox  ymin ymax
+             zbox  zmin zmax
+             shift x y z  put central atom at xyz rather than 000
+
+--  think about fractional occupation.  hmmmm....
+
+--  coordinates outside of -1:1
+}
+
+--  cut plane for surfaces (e.g. Tarnjit Johal's question about 110
+    plane of GaAs with S adsorbed
+
+--  my own pathfinder
+
+--  posibility: delimit "fields" information with {}
+
+--  override lengths and angles for *all* space groups
+
+--  write out symmetry tables
+
+{ from Boyan
+-- make shift message more intelligent
+
+-- write out symmetry tables for the equivalent points
+
+-- understand ratios of small fractions in the I/O structure
+}
+
+{ first pointed out by Fredrik Bikman, Dept of Organic Chemistry, 
+  Uppsala University
+  P.O. Box 531, S-751 21 Uppsala, Sweden
+
+-- alternate origins in space groups 85, 86, 88, 125, 130, 133, 134,
+   137, 138, 141, 142
+}
+
+{ from Julie
+-- hkl == dafs == qvect
+}
+
+dafs documentation, including the Chuck feature of selctively turning
+off anomalous part
+
+error checking dafs input
+
+tables of low energy absorption edges
+
+{ From: Zachary Levine <zachary@molphys.nist.gov>
+
+-- In that spirit, could we not use the tables at 
+   http://www-cxro.lbl.gov/optical_constants/atten2.html to perform
+   the same function, i.e., to normalize mu_0, which in turn normalizes mu?
+}
+
+
+Allow setting of variables and very simple math exrpressions, such as 
+1/2 and 0.5+delta
+
+{ From: Joerg Rockenberger <rocken@chemie.uni-hamburg.de>
+
+-- It might be useful if ATOMS could generate an error message which says that
+   the maximum number of atoms is exceeded.
+}
+
+{ from Chuck, this breaks it (another place of precision fixes it)
+
+title = GaN
+a = 3.180	c = 5.166	gamma = 120
+core = Ga	rmax = 7	space = P 63 M C
+atom
+% sym	x	y	z	tag
+    Ga	 0.333	 0.666	 0.0
+    N 	 0.333	 0.666	 0.375	             
+  
+}
+
+

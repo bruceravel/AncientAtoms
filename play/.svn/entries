@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1"
+   name=""
+   committed-date="2005-03-15T19:25:03.824126Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/play"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="kw"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="478e2ea4dbe763e34ca60b14814ff119"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="p1.inp"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1832369670f3b9400af6301e8eb7d804"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   name="wo3"
+   kind="dir"/>
+<entry
+   committed-rev="1"
+   name="atoms.inp"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="2a77f17e02e838d7b9e0fd42d2aba60d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="feff.inp"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="94145815bcdbe66c4b30a9b1519b9dc6"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="f100.dat"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="2b839ce9ea341a02354524f03f7d8744"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="f200.dat"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="585c9aacde432a54428f7bf7f1d2c1b0"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+</wc-entries>

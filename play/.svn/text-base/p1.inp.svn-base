@@ -1,0 +1,14 @@
+! ATOMS 2.47c by Bruce Ravel
+title  Barium Titanate from Kwei et al., using 300K data
+title  J Phys Chem, 97, 2368, 1993
+title  unit cell written as space group p 1
+space    p 1
+a         3.9910   b         3.9910   c         4.0352
+alpha    90.0000   beta     90.0000   gamma    90.0000
+core    ti2_1      edge    k          rmax     8.0000
+atoms
+  Ba     0.0000     0.0000     0.0000   ba1_1          
+  Ti     0.5000     0.5000     0.5224   ti2_1          
+  O      0.5000     0.5000     0.9756   o3_1           
+  O      0.5000     0.0000     0.4895   o4_1           
+  O      0.0000     0.5000     0.4895   o4_2           

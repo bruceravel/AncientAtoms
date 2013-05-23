@@ -1,0 +1,45 @@
+\chapentry{Introduction}{1}{1}
+\secentry{Overview}{1}{1}{1}
+\secentry{About Version 2.50}{1}{2}{2}
+\chapentry{Keywords}{2}{3}
+\secentry{General Format}{2}{1}{3}
+\secentry{List of Keywords}{2}{2}{3}
+\secentry{Explanations of Keywords}{2}{3}{4}
+\secentry{Specifying Site Tags and the Central Atom}{2}{4}{7}
+\secentry{Basis List v. Atom List}{2}{5}{8}
+\secentry{Dopants}{2}{6}{9}
+\secentry{geom.dat}{2}{7}{9}
+\chapentry{Space Groups}{3}{11}
+\secentry{Notation Conventions}{3}{1}{11}
+\secentry{Unique Crystallographic Positions}{3}{2}{11}
+\secentry{Specially Recognized Lattice Types}{3}{3}{12}
+\secentry{Bravais Lattice Conventions}{3}{4}{12}
+\secentry{Low Symmetry Space Groups}{3}{5}{13}
+\secentry{Rhombohedral Space Groups}{3}{6}{14}
+\secentry{Multiple Origins and the Shift Keyword}{3}{7}{14}
+\chapentry{Absorption Calculation and Experimental Corrections}{4}{16}
+\secentry{Absorption Calculation}{4}{1}{16}
+\secentry{McMaster Correction}{4}{2}{16}
+\secentry{I0 Correction.}{4}{3}{17}
+\secentry{Self-Absorption Correction.}{4}{4}{17}
+\chapentry{A Worked Example}{5}{18}
+\chapentry{Program Notes}{6}{21}
+\secentry{Acknowledgments}{6}{1}{21}
+\secentry{Comments on the Fortran Code}{6}{2}{21}
+\secentry{What is new since version 2.42}{6}{3}{22}
+\secentry{Naming Conventions}{6}{4}{23}
+\secentry{Obtaining New Copies of Feff or of the UWXAFS Analysis Programs}{6}{5}{23}
+\secentry{Bibliography}{6}{6}{23}
+\chapentry{Denoting Space Groups}{Appendix{} \char 65}{25}
+\secentry{A Quick Review of Crystallography}{\char 65}{1}{25}
+\secentry{Decoding the Hermann-Maguin Notation}{\char 65}{2}{26}
+\secentry{Decoding the Schoenflies Notation}{\char 65}{3}{28}
+\secentry{The Hermann-Maguin Notation}{\char 65}{4}{28}
+\subsecentry{Notation for the Standard Settings}{\char 65}{4}{1}{28}
+\subsecentry{Nonstandard Notations}{\char 65}{4}{2}{30}
+\secentry{The Schoenflies Notation}{\char 65}{5}{33}
+\chapentry{40 Example Input Files}{Appendix{} \char 66}{35}
+\secentry{Pure Elements}{\char 66}{1}{35}
+\secentry{Common Lattice Types}{\char 66}{2}{37}
+\secentry{Binary and Trinary Compounds}{\char 66}{3}{39}
+\secentry{High Temperature Superconductors.}{\char 66}{4}{43}

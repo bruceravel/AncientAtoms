@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2005-03-15T19:35:04.003506Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/misc"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="isnum.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="a1e504da7b9bb06cf54dcc26d3672e7b"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="upper.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="3b1e181c3170161ac9d66c504ce9183d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="nxtunt.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="f55253f68e9d04c2062869ec6d6c3405"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="bwords.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="e08bf9369991ed9b32dec23e52930fa1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="gettit.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="55b7db821fdfb2058268502a8e07cb68"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="interp.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="081e91cd1f30a912322cb25af94a4c86"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="getlgc.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="9cec8c4d09870cdcd1cb084b09ebf76a"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="volume.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="9e6d707f53611db9520fcbb4cebc1b1a"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="getrea.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="5bbab7dc0905ef77d1da0cc53e6438b8"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="untab.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="34929cbfceebd552647c738d14cce50c"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="nofx.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="f1a970411387820fc0d689b8fcd7d5d9"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="dbglvl.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="083daf678520e0dfae1214b62cf024b0"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="istrln.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1a6e81c3d61758de8d8458d4cc10ccd3"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="case.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="cf55639ffacb005972aa778cb9568aec"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="ref.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1c956401f77e709adfdd030789b1fd9e"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="positn.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="0b09a80df8c86614f2dc7e017d0be66d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="polyft.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="52eb1a3da8304cbab4bbe2d7c415b941"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="z2s.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="c90a34a3e1664457e66dc2466b0d6e94"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="fixsym.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="47b8c78933884a433d57c7d5ac552464"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="messag.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="38519a83cde819286717ff1d4d840399"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="determ.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="80bef253c6adf9529a903bd0a7db6112"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="is2z.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="703ca2fdde5fe827b49f8f3a150f3b80"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="triml.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="3964874fbe60fa9dc69410477d6736be"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="lower.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="885cdf3e1b93755b67ad9ec1497c0f7f"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="misc.f.save"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="2ab81185a005a20b5a7b170cbec9b1c1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="86146345acb24fb2039ac7e58b4bbff7"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="s2e.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="ca343ac5455826214d1bc960ad2dd519"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="getint.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="4187d946d808c4f101c5180a4b11b7a1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+</wc-entries>

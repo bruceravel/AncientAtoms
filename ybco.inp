@@ -1,0 +1,20 @@
+title YBCO: Y Ba2 Cu3 O7
+title  a 3.817   b 3.882  c 11.671
+space P M M M
+rmax=7.2              a 3.817  b 3.882  c 11.671
+core= cu1 
+atom
+! At.type   x        y       z       tag
+   Y       0.5      0.5     0.5
+   Ba      0.5      0.5     0.1839
+   Cu      0        0       0        cu1
+   Cu      0        0       0.3546   cu2
+   O       0        0.5     0        O1
+   O       0        0       0.1589   O2
+   O       0        0.5     0.3780   O3
+   O       0.5      0       0.3783   O4
+--------------------------------------------
+
+
+!!&& program:	"atoms"
+%# Input-mode Time-stamp: <98/03/03 17:42:51 bruce>

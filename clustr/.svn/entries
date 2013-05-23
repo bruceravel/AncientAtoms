@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2005-03-15T19:35:04.003506Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/clustr"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="clustr.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="f357aa901eacce50cfc542b3f0df4687"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="cellex.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="4cc5e8bbb5647831a8fb95cfb2ad50dc"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="subshl.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="824248014a3fa90a7eca8a4ac648ddb4"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="tetrot.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="6a237ba6d7952f261f80b686ec171fa0"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="atheap.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1b42090f1c846bb1c6540475c2eba963"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="ovrlap.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="5d4f3b5ad2a05186f0a76804ccb04f18"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="dist.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="a47c04d3820d49c7fc7c7132fb94bee8"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="trans.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="6250801950e3cad88e9d081c499fbc39"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="ffa87841b028ef88cd2aa1d72e1f923c"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+</wc-entries>

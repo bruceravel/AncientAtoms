@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2005-03-15T19:35:04.003506Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/unit"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="unitcl.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="8130599cd42769b938cd8f80f7ce76f4"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="unit.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="c32f618bfa38261a66fc304d8d1b5c26"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="realcl.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="2f70edbf00c05f743d0ed2bdfef96fcf"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="writcl.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1eb9403f6122c45fe17a03e7358d346d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="p1out.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="a01e855ed6446556cde3941e41546ede"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="7301f8684f538fe4dfeea2515cc749b1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+</wc-entries>

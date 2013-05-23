@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2005-03-15T19:35:04.003506Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/crystl"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="ibravl.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="e64fefd20cb484db2d472e4f57a2ffea"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="stjm3OQD"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="d41d8cd98f00b204e9800998ecf8427e"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="basfil.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="8a54228d6ffcc16132652868ea2d92ae"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="crystl.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="ec8d22d6661a0b0a594a40777ca4f2da"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="metric.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="154ca3590da1e16b6a530924d953b513"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="syschk.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="f3c5b073f808fbf2ae8c8579e1ae505f"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="bperm.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="8869634e8eec39b58d313ad6e917a8f1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="genmul.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="8cea388f03f2fc6a441e8ddbd093cfb5"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="equipt.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="9f39983290905398afb90d8732931a90"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="3b5da2ab835ed32247620482eaa44ba8"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="fperm.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="2d673003d25a89b3ef2d921de381b6d3"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="basort.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="1529dc5cdf3017328f43aec40406ef3d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="multip.f"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="b4977d16a70acb29d0a4c3abce4b1ee1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+</wc-entries>

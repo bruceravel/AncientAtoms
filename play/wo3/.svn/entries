@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="1"
+   name=""
+   committed-date="2005-03-15T19:25:03.824126Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/play/wo3"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="wo3-feff.inp"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="b7ccc21cfe04c3198802395598d9231d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="wo3.pl"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="24f5b5c60ce3ebadbd46e895477e245d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="foo"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="52c4b28d30735318f6adc364f7f2fa65"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+<entry
+   committed-rev="1"
+   name="wo3.inp"
+   text-time="2005-04-14T20:46:43.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="a2035d8ba567ba9b1930354db05fa332"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:43.000000Z"/>
+</wc-entries>

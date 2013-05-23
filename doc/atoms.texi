@@ -1,0 +1,2766 @@
+\input texinfo   @c -*-texinfo-*-
+@c $Id: atoms.texi,v 1.1 1998/11/08 17:05:13 bruce Exp $
+
+@c %**start of header
+@setfilename atoms.info
+@settitle @sc{atoms}
+@setchapternewpage on
+@c %**end of header
+
+@set version 2.50
+@set updatedate 17 May 1999
+
+@macro greek{x}
+@ifnottex
+@code{\x\}
+@end ifnottex
+@tex
+$@\x\$
+@end tex
+
+@end macro
+
+@syncodeindex vr cp
+@syncodeindex fn cp
+
+@dircategory Bruce Ravel's Own Documentation
+@direntry
+* Atoms: (atoms).           Atoms program documentation
+@end direntry
+
+
+@titlepage
+@title ATOMS
+@subtitle Generate atom lists from crystallographic data
+@subtitle Version @value{version}
+@subtitle Updated @value{updatedate}
+@subtitle Printed @today
+@author Bruce Ravel
+
+
+@page
+@vskip 0pt plus 1filll
+
+
+Permission is granted to make and distribute verbatim copies of
+this manual provided the copyright notice and this permission notice
+are preserved on all copies.
+
+Permission is granted to copy and distribute modified versions of this
+manual under the conditions for verbatim copying, provided that the entire
+resulting derived work is distributed under the terms of a permission
+notice identical to this one.
+
+Permission is granted to copy and distribute translations of this manual
+into another language, under the above conditions for modified versions,
+except that this permission notice may be stated in a translation approved
+by the author.
+
+@sp 2
+Copyright @copyright{} 1999 Bruce Ravel (@email{ravel@@phys.washington.edu})
+
+@end titlepage
+
+@ifinfo
+@node Top, Introduction, (dir), (dir)
+@top Master Menu
+@end ifinfo
+
+
+
+@ifinfo
+@sc{atoms} is a program for generating lists of atomic coordinates from
+crystallographic data.  The primary use of @sc{atoms} is to create input
+files suitable for running the @i{ab initio} XAFS program @sc{feff}.  For
+that purpose, the list is sorted by radial distance from an atom chosen
+as the central atom.  @sc{atoms} can also generate other sorts of lists as
+well as calculate estimations of the bulk absorption and density of the
+crystal and various corrections to EXAFS data due to experimental
+effects.
+@end ifinfo
+
+
+
+@menu
+* Introduction::
+* Keywords::
+* Space Groups ::
+* Corrections ::
+* Worked Example ::
+* Program Notes ::
+* Denoting Space Groups::
+* Examples::
+@end menu
+
+@node Introduction, Keywords, Top, Top
+@chapter Introduction
+
+
+@menu
+* Overview::
+* 2.50::
+@end menu
+
+@node Overview, 2.50, Introduction, Introduction
+@section Overview
+
+@sc{atoms} writes a list of atomic coordinates for any crystal given
+its crystallographic information. The list will be sorted by radial
+distance from an atom chosen as the central atom. @sc{atoms} also
+estimates the bulk absorption and density of the material and various
+corrections to XAFS data due to experimental effects.
+
+@sc{atoms} runs from an input file, which uses keywords to specify the
+input parameters. The code requires a file called @code{atoms.inp}.
+Because some operating systems are case sensitive the code will search
+for @code{ATOMS.INP} if @code{atoms.inp} is not found. The output is a
+text file that can serve as the input file for @sc{feff}. This file is
+appropriate for versions of @sc{feff} from 5 through 8, but not
+@sc{feff3} or @sc{feff4}.
+
+@code{atoms.inp} must contain all the data necessary to uniquely specify
+the crystal. The information that the program requires is:
+
+@enumerate
+@item
+The Hermann-Maguin or Schoenflies notation for the crystal space
+group. The notation conventions are slightly modified to work with a
+keyboard. This document lists all 230 groups as recognized by the
+program.
+@item
+The non-redundant, non-default cell axis lengths and angles
+between the axes.
+@item
+The two letter symbol and cell coordinates of each unique
+atom. The definition of unique atom is an atom occupying a unique
+crystallographic site. Sodium chloride (NaCl) has two unique atoms
+that must be specified. In Lead Titanate (PbTiO3), for example,
+there are two unique oxygen sites, so four unique atoms must be
+specified. One of the atoms must be chosen as the central atom.
+@end enumerate
+
+Usually this data can be taken directly from the crystallography
+literature. When confusion arises, consult @i{The International
+Tables of X-Ray Crystallography}. This is the standard by which
+the program was written.
+
+Chapter 3 should be read carefully. That chapter explains all of the
+conventions necessary to specify crystallographic information in
+@sc{atoms}. This is a wonderful program in that it quickly generates
+a list of atomic coordinates for an arbitrarily complicated crystal.
+It is an awful program in that it requires you, the user, to speak its
+language. There are numerous quirks and limitations to the algorithms
+that interpret unit cell structure. Much error checking is included
+in the code. If @sc{atoms} finds something in the input file that it
+does not like, it should give a useful run-time message.
+
+The output is a file that can be used to run @sc{feff}, the @i{ab
+initio} multiple scattering XAFS code written by Rehr and Zabinsky. The
+atom positions are organized into a list in the format read by
+@sc{feff}. @sc{atoms} makes reasonable guesses for several other inputs
+to @sc{feff}. The @code{feff.inp} file generated by @sc{atoms} will run
+@sc{feff} to completion.
+
+@sc{atoms} has been extensively tested, but is not guaranteed to be free
+of bugs. If you are displeased with the result of a run and you have
+followed all of the instructions and hints in this document, then you
+may have found a bug. To report your bug, first capture to a file all
+screen messages from the run with the suspect input file. Send the
+screen messages, the input file, and any output files to the
+author. Also tell what kind of computer you are using and which Fortran
+compiler you used to make the executable. You will find the author's
+e-mail address on the title page of this document.
+
+
+@node 2.50,  , Overview, Introduction
+@section About Version 2.50
+
+Version 2.50 of @sc{atoms} is almost identical to the last version --
+2.46b.  The most important change is that, by default, it writes input
+files which are suitable for @sc{feff}8.  If you want @sc{atoms} to
+write input files using the syntax of @sc{feff}6 or @sc{feff}7, set
+@code{feff8=false} in the @file{atoms.inp} file.
+
+There have also been a number of bug fixes and general code maintenance
+incorporated into @sc{atoms}.  A few new keywords have been added.  See
+Chapter 2 for details regarding keywords.
+
+Take particular note of the @code{SCF} card in the @sc{feff}8 input file.
+It's first argument determines the size of the cluster used to calculate
+self-consistent atomic potentials.  See the @sc{feff} document for
+a discussion of sensible values for this number and always be sure to
+edit your @sc{feff}8 input file accordingly.  A poor choice for this
+number can result either in poor potentials or in needlessly lengthy
+calculations.
+
+For the latest information about the status of @sc{atoms}, please see
+the @sc{atoms} web site at
+@uref{http://feff.phys.washington.edu/~ravel/atoms}.
+
+
+@node Keywords, Space Groups , Introduction, Top
+@chapter Keywords
+
+@menu
+* General Format ::
+* List of Keywords ::
+* Explanations of Keywords ::
+* Site Tags::
+* Basis v. Atom::
+* Dopants::
+* geom.dat::
+@end menu
+
+@node General Format , List of Keywords , Keywords, Keywords
+@section General Format
+
+Take a peek at Appendix B. Included there are many examples of input
+files for @sc{atoms}. Each one specifies lattice parameters, a
+space group, positions of atoms within the unit cell, and a few other
+pieces of information. The purpose of this chapter is teach you how to
+construct input files, thus to communicate with @sc{atoms}.
+
+@code{atoms.inp} uses keywords to describe the inputs. With only
+a few exceptions, the keywords are allowed to occur in any order in
+the file, and usually have transparent meanings. This structure
+allows the input file to be easily read and modified. All keywords
+use the syntax:
+@example
+   keyword delimiter value(s) delimiter ...
+@end example
+
+The delimiter can be:
+
+@enumerate
+@item
+one or more white spaces (blanks and/or TABs)
+@item
+one equal sign and any number of white spaces
+@item
+one comma and any number of white spaces
+@end enumerate
+
+Most keywords take only one value. Many keywords can be put on one
+line (though some keywords require their own line). Internal comments
+can be written anywhere in @code{atoms.inp}, which help remind
+you what the keywords mean, or how you chose the input
+values. Keywords can be in upper, lower, or mixed case. @sc{atoms}
+is not sensitive to the case of keywords or their values.
+
+
+@node List of Keywords , Explanations of Keywords , General Format , Keywords
+@section List of Keywords
+
+Here is a summary of keywords and their meanings. The following
+sections give more detailed explanations for each keyword. Where
+appropriate, default values are given in brackets.
+
+@example
+______________________________________________________________________
+* or % or ! | Indicates a comment.                      |
+Title       | Title line to write to output file.       |  no lines
+Space       | The space group designation.              |  no default
+A           | The first lattice constant.               |  no default
+B           | The second lattice constant.              | [equal to A]
+C           | The third lattice constant.               | [equal to A]
+Alpha       | The angle between B and C.                | [90.0 deg]
+Beta        | The angle between C and A.                |  [90.0 deg]
+Gamma       | The angle between A and B.                | [90.0 deg]
+Core        | Specifies absorbing atom.                 |  no default
+Rmax        | Radial size of the cluster.               | [5.0 A]
+Index       | Flag controlling indexing of atom list.   | [False]
+Shift       | Shift coordinates of all atoms.           | [0,0,0]
+Out         | Output file name.                         | [feff.inp]
+Edge        | Specifies absorption edge.                | [K for Z>=57]
+Nitrogen    | Flag for fluorescence calculations.       | [0.0]
+Argon       | Flag for fluorescence calculations.       | [0.0]
+Krypton     | Flag for fluorescence calculations.       | [0.0]
+Feff        | Flag for writing feff.inp.                | [True]
+Feff8       | Flag for writing feff.inp for feff8.      | [True]
+Corrections | Flag for turning off McMaster corrections |
+Geom        | Flag for writing geom.dat file.           | [False]
+Unit        | Flag for output file with full unit cell  | [False]
+P1          | Flag for output file as space group p 1   | [False]
+Dopant      | Symbols of dopant and site replaced + %   | [no dopants]
+Atom        | Begin atom list on next line.             |
+Basis       | Begin basis list on next line.            |
+-----------------------------------------------------------------------
+@end example
+
+@node Explanations of Keywords , Site Tags, List of Keywords , Keywords
+@section Explanations of Keywords
+
+@table @b
+
+@item * or % or ! /
+Everything after one of these characters on a line in the input file
+will be ignored by @sc{atoms}.
+
+@item Title
+Indicates a user-chosen title line which will be written to
+@code{feff.inp}.
+9 title lines of 72 characters each can be used. Everything on a line
+after the keyword title will be included in the title. If keywords
+are on the line following title, they will be read as part of the
+title, not as separate keywords. The word @code{comment} is synonymous with
+@code{title}.
+
+@item Space
+This keyword is followed by the Hermann-Maguin or Schoenflies
+designation for the space group. Complete lists of these designations
+are are found in Appendix A. Because the Hermann-Maguin designation,
+as adapted for the keyboard, includes spaces, this keyword is handled
+specially by @sc{atoms}. @code{space} should be on its own line or at
+the end of a line.
+
+@item A
+This specifies the first lattice constant. A must always be
+specified. In a cubic or rhombohedral space groups, where only one
+lattice parameter is needed, A is the one to specify.
+
+@item B
+This specifies the second lattice constant. It is set equal to A
+unless specified.
+
+@item C
+This specifies the third lattice constant. It is set equal to A
+unless specified. In tetragonal, or hexagonal space groups, this is
+the second lattice constant that must be specified.
+
+@item Alpha
+This specifies the angle between B and C. Specify the angle in
+degrees. This is the angle that must be specified for rhombohedral
+space groups. The default value is 90 deg.
+
+@item Beta
+This specifies the angle between C and A. Specify the angle in
+degrees. The default value is 90 deg. This is the angle that must be
+specified for monoclinic space groups.
+
+@item Gamma
+This specifies the angle between A and B. Specify the angle in
+degrees. The default value is 90 deg for orthogonal groups and 120
+deg for hexagonal and trigonal groups.
+
+@item Core
+This specifies the absorbing atom. The value of this keyword must be
+a site tag. This atom will be placed at the center of the cluster and
+will be used as the central atom in the McMaster and fluorescent
+correction calculations. The central atom must be specified by this
+keyword. This is a change from early versions of @sc{atoms}. This
+keyword has no default. A central atom must be specified. The
+keyword @code{central} is synonymous with @code{core}.
+
+@item Rmax
+This specifies the maximum radial distance in the cluster of
+calculated atomic coordinates.
+
+@item Index
+This is a logical flag, thus takes a value of true or false. Along
+with the coordinates, the atom list in @code{feff.inp} contains the
+symbol of each atom. With the index feature turned off, only the two
+letter symbol of each atom is printed. With it turned on, atoms of
+the same type will be numbered sequentially according to distance. To
+enable this feature, the syntax is
+@example
+index true
+@end example
+An example: in pure copper, the 12 nearest neighbors will be labeled
+Cu01, the 6 next neighbors will be labeled Cu02, and so on. Without
+indexing, all the atoms will be labeled Cu.
+
+@item Shift
+Moves all atoms in the atom list by the specified amount. This keyword
+takes three real numbers as its values. The syntax is:
+@example
+shift xvalue yvalue zvalue
+@end example
+The value of the shift vector is simply added to all fractional atomic
+coordinates in the atom list. Read the section on Multiple Origins in
+section 3.6 for a discussion of the usefulness of this keyword.
+
+@item Out
+This specifies an output file name other than @code{feff.inp}. It can
+be up to 72 characters, so can include a directory path as well as the
+file name. If @code{out = list} is specified then a file called
+@code{atoms.lis} will be written instead of @code{feff.inp}.
+@code{atoms.lis} will contain the title lines and the coordinate list
+but none of headers or @sc{feff} keywords. This option is useful for
+applications other than @sc{feff} that require a list of atomic
+coordinates.
+
+@item Edge
+This specifies the absorption edge of the central atom. If edge is
+not specified, the default value is determined from the Z of the
+central atom. For central atoms with Z<=57, the K edge is chosen.
+For heavier atoms, the L3 edge is chosen. K, L1, L2, and L3 are the
+only values for edge recognized by @sc{atoms}.
+
+@item Nitrogen
+This number specifies the percentage by pressure of nitrogen gas
+in the I0 chamber in a fluorescence XAFS experiment. Specifying
+either this keyword or the argon or krypton keywords tells
+@sc{atoms} to estimate the corrections to the data due to the
+energy response of the I0 chamber and the self-absorption of the
+sample. These calculations are described in detail in chapter 4.
+This keyword takes a real number between 0 and 1 as its value. The
+default is that the fluorescence calculations are turned off.
+
+@item Argon
+This number specifies the percentage by pressure of argon gas in
+the I0 chamber in a fluorescence XAFS experiment. Specifying either
+this keyword or the nitrogen or krypton keywords tells @sc{atoms}
+to estimate the corrections to the data due to the energy response of
+the I0 chamber and the self-absorption of the sample. These
+calculations are described in detail in chapter 4. This keyword takes
+a real number between 0 and 1 as its value. The default is that the
+fluorescence calculations are turned off.
+
+@item Krypton
+This number specifies the percentage by pressure of krypton gas
+in the I0 chamber in a fluorescence XAFS experiment. Specifying
+either this keyword or the nitrogen or argon keywords tells
+@sc{atoms} to estimate the corrections to the data due to the
+energy response of the I0 chamber and the self-absorption of the
+sample. These calculations are described in detail in chapter 4.
+This keyword takes a real number between 0 and 1 as its value. The
+default is that the fluorescence calculations are turned off.
+
+@item Geom
+This is a logical flag, thus takes a value of true or false. If
+true, @sc{atoms} will write a file called @code{geom.dat} for use in the
+path finder module of @sc{feff}. If @code{geom.dat} is written, the
+@code{NOGEOM} card will be written to @code{feff.inp}.
+
+@item Unit
+This is a logical flag, thus takes a value of true or false. If true,
+@sc{atoms} will write a file called @code{unit.dat} contining the atomic
+coordinates of all atoms in the unit cell as well as all atoms on the
+walls, edges, and corners of the unit cell.
+
+@item P1
+This is a logical flag, thus takes a value of true or false. If true,
+@sc{atoms} will write a file called @code{p1.inp}. This file is a valid
+input file for @sc{atoms}. It contains the entire contents of the
+unit cell in the atoms list and has the space keyword set to @code{p 1},
+the monoclinic space group of no internal symmetries. All axes and
+angles are explicitly specified in @code{p1.inp}, as are @code{core},
+@code{edge}, @code{rmax}, and all of the title lines.
+
+@item Feff
+This is a logical flag, thus takes a value of true or false. By
+default it is true and will write out @code{feff.inp}. If it is false,
+@sc{atoms} will not calculate the cluster of atoms, thus will not
+write out either @code{feff.inp} or @code{geom.dat}.
+
+@item Dopant
+This keyword specifies the type and percent substitution of a dopant
+material. The syntax is:
+@example
+   dopant dp tag percentage
+@end example
+Where @code{dp} is the atomic symbol of the doping atom, @code{tag} is
+the site tag of the site where the dopant resides, and the percentage
+is a real number between 0 and 1 specifying the amount of
+substitution. If @code{tag} is an atomic symbol rather than a site tag,
+then all sites containing that atomic species will affected.
+
+@item Atom
+This must be the last keyword in the input file. If it is not the
+program will almost certainly stop running. This keyword tells the
+program to go to the next line and begin reading in the unique atom
+coordinates. The atom list is a five column, structured list. Column
+one is the two letter atomic symbol (@b{not} the Z number). Columns
+two through four contain the x, y, and z coordinates of each atom.
+These numbers are entered as fractions of the a, b, and c axes
+respectively. The fifth column contains the site tag. See section 2.4
+for an explanation of the site tags. The keywords atom and basis are
+incompatible. If both are specified in an input file, the program
+will stop running.
+
+@item Basis
+This must be the last keyword in the input file. If it is not the
+program will almost certainly stop running. This keyword tells the
+program to go to the next line and begin reading in the basis atom
+coordinates. The basis list is a five column, structured list.
+Column one is the two letter atomic symbol (@b{not} the Z number).
+Columns two through four contain the x, y, and z coordinates of each
+atom. These numbers are entered as fractions of the a, b, and c axes
+respectively. The fifth column contains the site tag. See section 2.4
+for an explanation of the site tags. A basis may be constructed
+around an empty site. Specify that site with the word @code{null}
+rather than an atomic symbol. The keywords atom and basis are
+incompatible. If both are specified in an input file, the program
+will stop running.
+
+@end table
+
+
+@node Site Tags, Basis v. Atom, Explanations of Keywords , Keywords
+@section Specifying Site Tags and the Central Atom
+
+The central atom of the cluster written to @code{feff.inp} must
+be explicitly specified with the keyword core. To avoid ambiguity in
+a situation involving inequivalent crystallographic sites containing
+the same atomic species, the value of this keyword must be a site tag.
+The site tags are the user supplied character strings which appear in
+the fifth column of the atom or basis list.
+
+@b{Users of Atoms 2.41 and prior versions:} This is the most
+important difference between @sc{atoms} 2.42 and versions numbered
+2.41 and lower. Previously the fifth column of the atom or basis list
+was used to specify the central atom. The addition of site tags used
+to label the different sites requires specification of the central
+atom by keyword.
+
+The fifth column of the atom list contains the site tag. The user may
+label the sites in any way desired and these labels may be up to 10
+characters long. The sites must be labeled uniquely or else
+@sc{atoms} will become confused if one of the sites labeled
+redundantly is chosen as the core atom. If a tag is not specified for
+a site then the default tag will be used. The default for a site tags
+is to label that site with the atomic symbol of the occupying atom.
+Remember that @sc{atoms} is insensitive to case, thus the tag
+@code{THISATOM} is the same as @code{thisatom} and @code{ThisAtom}.
+
+Here is an example. Note that the the value of core is a tag, not an
+element symbol.
+
+@example
+title YBCO: Y Ba2 Cu3 O7
+title  a 3.817   b 3.882  c 11.671
+space P M M M
+rmax=7.2              a 3.817  b 3.882  c 11.671
+core= cu1
+atom
+! At.type   x        y       z       tag
+   Y       0.5      0.5     0.5
+   Ba      0.5      0.5     0.1839
+   Cu      0        0       0        cu1
+   Cu      0        0       0.3546   cu2
+   O       0        0.5     0        O1
+   O       0        0       0.1589   O2
+   O       0        0.5     0.3780   O3
+   O       0.5      0       0.3783   O4
+@end example
+
+This is the @code{atoms.inp} for superconducting Y Ba2 Cu3 O7. Notice
+that the copper and oxygen sites are tagged with unique labels. The
+central atom is specified with one of these labels -- the @code{Cu1}
+site will be at the center of the cluster written to @code{feff.inp}.
+The yttrium and barium sites are tagged with the atomic symbol by
+default. Since each of these species occupies only one site, there is
+no ambiguity in using the atomic symbol as the tag.
+
+In @code{feff.inp} each atom will be identified by its tag, not by its
+atomic symbol. Assignment of unique potentials, however, is based on
+atomic species. If you wish to assign unique potentials based on
+crystallographic considerations, you will need to edit @code{feff.inp}.
+
+
+@node Basis v. Atom, Dopants, Site Tags, Keywords
+@section Basis List v. Atom List
+
+@sc{atoms} has the ability to recognize basis vectors. For some
+lattice types this is a somewhat nicer way of describing the
+structure. In introductory solid state physics texts, the diamond
+structure is often described as face centered cubic with a two atom
+basis. For example, silicon might be specified as a diamond structure
+crystal with a unique atom at position (1/8, 1/8, 1/8). It might also
+be specified as an FCC structure with a basis of (0,0,0) and (1/4,
+1/4, 1/4).
+
+@sc{atoms} handles a basis list slightly differently from an atom
+list. When given an atom list, the code translates each point in the
+list by the symmetry operations specified in the space group name.
+When given a basis list, the code only performs these symmetry
+operations on one of the points listed. It then constructs the basis
+at each of the points so generated. The keyword core may select any
+atom in the basis as the central atom of the cluster.
+
+The best use of this feature would be to generate an atom list for a
+structure that is described by a periodic repetition of some large,
+complex local structure. Clathrates are an excellent example of this.
+
+One very important rule must be followed when using a basis list. The
+first atom in the list must correctly represent the desired
+translation symmetry. In the case of silicon, the basis must be
+translated like the point (0,0,0) in space group @code{F m 3 m} (the
+space group of FCC crystals) to yield the diamond structure. Thus the
+first atom in the basis list for silicon @b{must} be at (0,0,0) or
+else the basis will not be expanded correctly.
+
+A basis can be constructed around an empty site, by specifying the
+coordinates of the empty site as the first entry in the basis list and
+entering the word @code{null} instead of an atomic symbol. The null site
+will not appear in the atom list in @code{feff.inp}. The keyword core
+may not take @code{null} as a value.
+
+To finish the example of silicon, here are two input files that give
+the same output:
+
+@example
+title Si, fcc with a two atom basis
+a = 6.485 space F m 3 m ! space group of fcc
+rmax=6.5 core=si1
+basis
+  Si 0.0  0.0  0.0  si1
+  Si 0.25 0.25 0.25 si2
+-----------------------------------------
+
+title Si, diamond structure
+a = 6.485 space F d 3 m ! space group of diamond
+rmax 6.5
+atom
+  Si 0.125 0.125 0.125
+-----------------------------------------
+@end example
+
+See section 3.7 for an explanation of why the silicon atom in the
+second example must be at (1/8, 1/8, 1/8) rather than at (0,0,0).
+
+
+@node Dopants, geom.dat, Basis v. Atom, Keywords
+@section Dopants
+
+
+@sc{atoms} handles dopants in the simplest possible fashion. It
+assumes all dopants are substitutional and that there are no
+correlations between cells regarding which lattice sites are occupied
+by doping atoms. Furthermore, @sc{atoms} makes no assumptions about
+which physical sites are occupied by dopants. Thus the atom list
+written to @code{feff.inp} is the list for the undoped structure.
+@sc{atoms} uses information about the dopants in the following ways:
+
+@enumerate
+@item
+For calculating the density, the absorption, and the
+experimental corrections.
+@item
+A dopant may be the central atom in the atom list, thus the
+calculations mentioned above will be performed at the absorption edge
+of the dopant.
+@end enumerate
+
+The syntax is:
+@example
+  dopant dp tag percentage
+@end example
+where @code{dp} and @code{tag} are character strings and percentage is a
+number between 0 and 1. The value of @code{dp} is the atomic symbol of
+the dopant. The value of @code{tag} is the site tag of the site where
+the dopant resides. If the value of @code{tag} is an atomic symbol then
+all sites containing that atomic species will be doped.
+
+@sc{atoms} allows up to 3 dopants per site and no more than 9 in
+the entire crystal. If this is insufficient, then you have a mess on
+your hands. You also have my sympathy -- contact me and I will help
+you alter the code to accommodate your horrid problem.
+
+The atomic species specified for a site by the dopant keyword need not
+be the minority component. This might be useful for uniquely
+specifying the core atom. Vacancies may be introduced by doping
+sites with @code{null}.
+
+Analyzing a doped material in fine structure spectroscopies is
+complicated. The simple scheme that I describe in this section is
+useful for several of the calculations in the code, but is clearly
+insufficient for the task of resolving the local structure of a doped
+material. That @sc{atoms} writes the atom list in @code{feff.inp} using
+the undoped structure is indicative of this.
+
+
+@node geom.dat,  , Dopants, Keywords
+@section geom.dat
+
+
+The path finder in @sc{feff} has an option to use crystal symmetries
+in order to speed the determination and computation of all paths.
+This is done by providing a file called @code{geom.dat} containing
+special flags specifying the relevant symmetries. Setting @code{geom =
+true} in @code{atoms.inp} will tell @sc{atoms} to write a @code{geom.dat}
+file and to place the card @code{NOGEOM} in @code{feff.inp}. This leads
+to a large reduction of computation time only in crystals of high
+symmetry. In an fcc structure, the reduction in time can be as high
+as a factor of about 50. In a structure of lower symmetry, the
+savings will rarely be more than a factor of about 4. Use of the
+geom.dat generated by @sc{atoms} will not effect the computation time
+of the potentials and phase shifts calculation of the first module of
+@sc{feff}, nor will it effect the computation time of the individual
+paths in the third module. The @code{geom.dat} file has the same atom
+list as the @code{feff.inp} file.
+
+To use the @code{geom.dat} file, it must be located in the directory in
+which @sc{feff} is run. Since the @code{NOGEOM} card is in
+@code{feff.inp}, @sc{feff} will know to access at the appropriate time
+the geom.dat file written by @sc{atoms}. The @code{geom.dat} file and
+the atom list in @code{feff.inp} should both remain unmodified, or else
+@sc{feff} might get confused. The @sc{feff} card @code{RMAX} can be
+changed to limit the extent of the @sc{feff} calculation without
+needing to change geom.dat. See the @sc{feff} document for more
+details about this.
+
+
+@node Space Groups , Corrections , Keywords, Top
+@chapter Space Groups
+
+@menu
+* Notation Conventions ::
+* Positions ::
+* Special Lattice Types ::
+* Bravais::
+* Low Symmetry ::
+* Rhombohedral::
+* the Shift Keyword ::
+@end menu
+
+@node Notation Conventions , Positions , Space Groups , Space Groups
+@section Notation Conventions
+
+
+The two most commonly used standards for the designation of three
+dimensional space groups are the Hermann-Maguin and Schoenflies
+conventions. @sc{atoms} recognizes both conventions. Each of the
+230 space groups as designated in each convention is listed in
+appendix A.
+
+The Hermann-Maguin system uses four symbols to uniquely specify the
+group properties of each of the 230 space groups. The first symbol is
+a single letter (@code{P, I, R, F, A, B} or @code{C}) which refers to the
+Bravais lattice type. The remaining three letters refer to the point
+group of the crystal.
+
+Some modifications to the notation convention are made for use with a
+keyboard. Spaces must separate each of the four symbols. Subscripted
+numbers are printed next to the number being modified (e.g. 6_3 is
+printed as @code{63}). A bar above a number is entered with a minus sign.
+
+Occasionally there are variations in how space groups are
+referenced. For example, the hausmannite structure of Mn3 O4 is placed
+in space group @code{I 41/A M D} by the conventions laid out in
+@i{The International Tables}. In @i{Crystal Structures} v. 3,
+Wyckoff denotes this space group as @code{I 4/A M D}. This sort of
+incongruity is unfortunate. The list of Hermann-Maguin space group
+designations as recognized by @sc{atoms} is included in appendix A.
+If you cannot resolve the incongruity using this list, try using the
+Schoenflies notation.
+
+The Schoenflies conventions are also recognized by @sc{atoms}. In the
+literature there is less variation in the application of these
+conventions. The Schoenflies convention is, in fact, less precise than
+the Hermann-Maguin in that the complete symmetry characteristics of the
+crystal are not encoded in the space group designation. Adaptations to
+the keyboard have been made here as well. Subscripts are denoted with an
+underscore (_) and superscripts are denoted with a caret (^). Spaces are
+not allowed in the keyboard designation. A couple of examples:
+@code{d_4^8}, and @code{O_5.} The underscore does not need to precede to
+superscript. @code{C_2^V9} can also be written @code{C^V9_2}. Each of
+the 230 space groups as designated by the Schoenflies notation is listed
+in Appendix A in the same order as the listing of the Hermann-Maguin
+notation. The two conventions are equally supported in the code.
+
+
+
+@node  Positions , Special Lattice Types , Notation Conventions , Space Groups
+@section Unique Crystallographic Positions
+
+
+The atom or basis list in @code{atoms.inp} is a list of the
+unique crystallographic sites in the unit cell. A unique site is one
+(and only one) of a group of equivalent positions. The equivalent
+positions are related to one another by the symmetry properties of the
+crystal. @sc{atoms} determines the symmetry properties of the
+crystal from the name of the space group and applies those symmetry
+operations to each unique site to generate all of the equivalent
+positions.
+
+If you include more than one of a group of equivalent positions in the
+atom or basis list, then a few odd things will happen. A series of
+run-time messages will be printed to the screen telling you that atom
+positions were found that were coincident in space. This is because
+each of the equivalent positions generated the same set of points in
+the unit cell. @sc{atoms} removes these redundancies from the
+atom list. The atom list and the potentials list written to
+@code{feff.inp} will be correct and @sc{feff} can be run
+correctly using this output. However, the site tags and the indexing
+of the atoms will certainly make no sense. Also the density of the
+crystal will be calculated incorrectly, thus the absorption
+calculation (section 4.1) and the self-absorption correction (section
+4.3) will be calculated incorrectly as well. The McMaster correction
+(section 4.2) is unaffected.
+
+
+
+@node Special Lattice Types , Bravais, Positions , Space Groups
+@section Specially Recognized Lattice Types
+
+
+For some common crystal types it is convenient to have a shorthand way
+of designating the space group. For instance, one might remember that
+copper is an fcc crystal, but not that it is in space group @code{F M 3
+M} (or @code{O_H^5}). In this spirit, @sc{atoms} will recognize the
+following words for common crystal types. These words may be used as the
+value of the keyword space and @sc{atoms} will supply the correct space
+group. Note that several of the common crystal types are in the same
+space groups. For copper it will still be necessary to specify that an
+atom lies at (0,0,0), but it isn't necessary to remember that the space
+group is @code{F M 3 M}.
+
+@example
+_______________________________________________________
+cubic                | cubic             | P M 3 M
+body-centered cubic  | bcc               | I M 3 M
+face-centered cubic  | fcc               | F M 3 M
+halite               | salt or nacl      | F M 3 M
+zincblende           | zincblende or zns | F -4 3 M
+cesium chloride      | cscl              | P M 3 M
+perovskite           | perovskite        | P M 3 M
+diamond              | diamond           | F D 3 M
+hexagonal close pack | hex or hcp        | P 63/M M C
+graphite             | graphite          | P 63 M C
+-------------------------------------------------------
+@end example
+
+When @code{space} is set to hex or graphite, @code{gamma} is
+automatically set to 120.
+
+
+@node Bravais, Low Symmetry , Special Lattice Types , Space Groups
+@section Bravais Lattice Conventions
+
+
+@sc{atoms} assumes certain conventions for each of the Bravais
+lattice types. Listed here are the labeling conventions for the axes
+and angles in each Bravais lattice.
+
+@itemize @bullet
+@item Triclinic:
+All axes and angles must be specified.
+
+@item Monoclinic:
+@code{B} is the perpendicular axis, thus @code{beta} is the angle not
+equal to 90.
+
+@item Orthorhombic:
+@code{A}, @code{B}, and @code{C} must all be specified.
+
+@item Tetragonal:
+The @code{C} axis is the unique axis in a tetragonal cell. The @code{A}
+and @code{B} axes are equivalent. Specify @code{A} and @code{C} in
+@code{atoms.inp}.
+
+@item Trigonal:
+If the cell is rhombohedral then the three axes are equivalent as are
+the three angles. Specify @code{A} and @code{alpha}. If the cell has
+hexagonal axes, specify @code{A} and @code{C}. @code{gamma} will be set to
+120 by the program.
+
+@item Hexagonal:
+The equivalent axes are @code{A} and @code{B}. Specify @code{A} and @code{C}
+in @code{atoms.inp}. @code{Gamma} will be set to 120 by the program.
+
+@item Cubic:
+Specify @code{A} in <tt /atoms.inp/. The other axes will be set equal
+to @code{A} and the angles will all be set to 90.
+
+@end itemize
+
+
+@node Low Symmetry , Rhombohedral, Bravais, Space Groups
+@section Low Symmetry Space Groups
+
+In three dimensional space there is an ambiguity in choice of right
+handed coordinate systems. Given a set of mutually orthogonal axes,
+there are six choices for how to label the positive @i{x}, @i{y},
+and @i{z} directions. For some specific physical problem, the
+crystallographer might choose a non-standard setting for a crystal.
+The choice of standard setting is described in detail in @i{The
+International Tables}. The Hermann-Maguin symbol describes the
+symmetries of the space group relative to this choice of coordinate
+system.
+
+The symbols for triclinic crystals and for crystals of high symmetry
+are insensitive to choice of axes. Monoclinic and orthorhombic
+notations reflect the choice of axes for those groups that possess a
+unique axis. Tetragonal crystals may be rotated by 45 degrees about
+the z axis to produce a unit cell of doubled volume and of a different
+Bravais type. Alternative symbols for those space groups that have
+them are listed in Appendix A.
+
+@sc{atoms} recognizes those non-standard notations for these crystal
+classes that are tabulated in @i{The International Tables}.
+@code{atoms.inp} may use any of these alternate notations so long as
+the specified cell dimensions and atomic positions are consistent with
+the choice of notation. Any notation not tabulated in chapter 6 of
+the 1969 edition of @i{The International Tables} will not be
+recognized by @sc{atoms}.
+
+This resolution of ambiguity in choice of coordinate system is one of
+the main advantages of the Hermann-Maguin notation system over that
+of Shoenflies. In a situation where a non-standard setting has been
+chosen in the literature, use of the Schoenflies notation will, for
+many space groups, result in unsatisfactory output from @sc{atoms}.
+In these situations, @sc{atoms} requires the use of the
+Hermann-Maguinn notation to resolve the choice of axes.
+
+Here is an example. In the literature reference, La2 Cu O4 was given
+in the non-standard @code{b m a b} setting rather than the standard
+@code{c m c a}. As you can see from the axes and coordinates, these
+settings differ by a 90 degree rotation about the @code{A} axis. The
+coordination geometry of the output atom list will be the same with
+either of these input files, but the actual coordinates will reflect
+this 90 degree rotation.
+
+@example
+title La2CuO4 structure at 10K from Radaelli et al.
+title standard setting
+space c m c a
+a= 5.3269 b= 13.1640 c= 5.3819
+rmax= 8.0 core= la
+atom
+  la  0      0.3611   0.0074
+  Cu  0      0        0
+  O   0.25  -0.0068  -0.25    o1
+  O   0      0.1835  -0.0332  o2
+--------------------------------------
+
+
+title La2CuO4 structure at 10K from Radaelli et al.
+title non standard setting, rotated by 90 degrees about A axis
+space b m a b
+a= 5.3269 b= 5.3819 c= 13.1640
+rmax= 8.0 core= la
+atom
+  la  0     -0.0074   0.3611
+  Cu  0      0        0
+  O   0.25   0.25    -0.0068   o1
+  O   0      0.0332   0.1835   o2
+--------------------------------------
+@end example
+
+
+
+
+
+@node Rhombohedral, the Shift Keyword , Low Symmetry , Space Groups
+@section Rhombohedral Space Groups
+
+There are seven rhombohedral space groups. Crystals in any of these
+space groups that may be represented as either monomolecular
+rhombohedral cells or as trimolecular hexagonal cells. These two
+representations are entirely equivalent. The rhombohedral space
+groups are the ones beginning with the letter @code{R} in the
+Hermann-Maguin notation. @sc{atoms} does not care which representation
+you use, but a simple convention must be maintained. If the
+rhombohedral representation is used then the keyword @code{alpha} must
+be specified in @code{atoms.inp} to designate the angle between the
+rhombohedral axes and the keyword @code{a} must be specified to
+designate the length of the rhombohedral axes. If the hexagonal
+representation is used, then @code{a} and @code{c} must be specified in
+@code{atoms.inp}. @code{Gamma} will be set to 120 by the code. Atomic
+coordinates consistent with the choice of axes must be used.
+
+
+
+
+@node the Shift Keyword ,  , Rhombohedral, Space Groups
+@section Multiple Origins and the Shift Keyword
+
+
+Some space groups in @i{The International Tables} are listed with two
+possible origins. The difference is only in which symmetry point is
+placed at (0,0,0). @sc{atoms} always wants the orientation labeled
+``origin-at-centre''. This orientation places (0,0,0) at a point of
+highest crystallographic symmetry. Wyckoff and other authors have the
+unfortunate habit of not choosing the ``origin-at-centre'' orientation
+when there is a choice. Again Mn3 O4 is an example. Wyckoff uses the
+``origin at -4m2'' option, which places one Mn atom at (0,0,0) and
+another at (0,1/4,5/8). @sc{atoms} wants the ``origin-at-centre''
+orientation which places these atoms at (0,3/4,1/8) and (0,0,1/2).
+Admittedly, this is an arcane and frustrating limitation of the code,
+but it is not possible to conclusively check if the
+``origin-at-centre'' orientation has been chosen.
+
+Twenty one of the space groups are listed with two origins in @i{The
+International Tables for X-Ray Crystallography}. @sc{atoms} knows
+which groups these are and by how much the two origins are offset, but
+@b{cannot} know if you chose the correct one for your crystal. If
+you use one of these groups, @sc{atoms} will print a run-time message
+warning you of the potential problem and telling you by how much to
+shift the atomic coordinates in @code{atoms.inp} if the incorrect
+orientation was used. This warning will also be printed at the top of
+the @code{feff.inp} file. If you use the ``origin-at-center''
+orientation, you may ignore this message.
+
+If you use one of these space groups, it usually isn't hard to know if
+you have used the incorrect orientation. Some common problems include
+atoms in the atom list that are very close together (less that 1
+angstrom), unphysically large densities (see section 4.1), and
+interatomic distances that do not agree with values published in the
+crystallography literature. Because it is tedious to edit the atomic
+coordinates in the input file every time this problem is encountered
+and because forcing the user to do arithmetic (any good scientist's
+bugaboo!) invites trouble, there is a useful keyword called @code{shift}.
+For the Mn3 O4 example discussed above, simply insert this line in
+@code{atoms.inp} if you have supplied coordinates referenced to
+the incorrect origin:
+@example
+  shift = 0.0  0.25 -0.125
+@end example
+This vector will be added to all of the coordinates in the atom list
+after the input file is read.
+
+Here is the input file for Mn3 O4 using the shift keyword:
+
+@example
+title Mn3O4, hausmannite structure, using the shift keyword
+a       5.75    c       9.42  core    Mn2
+rmax    7.0     Space   i 41/a m d
+shift   0.0  0.25  -0.125
+atom
+! At.type  x   y    z     tag
+  Mn      0.0 0.0  0.0    Mn1
+  Mn      0.0 0.25 0.625  Mn2
+  O       0.0 0.25 0.375
+-------------------------------------------------
+@end example
+
+The above input file gives the same output as the following. Here the
+shift keyword has been removed and the shift vector has been added to
+all of the fractional coordinates. These two input files give
+equivalent output.
+
+@example
+title Mn3O4, hausmannite structure, no shift keyword
+a       5.75    c       9.42  core      Mn2
+rmax    7.0     Space   i 41/a m d
+atom
+! At.type  x    y     z     tag
+  Mn      0.0  0.25 -0.125  Mn1
+  Mn      0.0  0.50  0.50   Mn2
+  O       0.0  0.50  0.25
+-------------------------------------------------
+@end example
+
+@node Corrections , Worked Example , Space Groups , Top
+@chapter Absorption Calculation and Experimental Corrections
+
+
+Included in @sc{atoms} is data from @i{Compilation of X-Ray Cross
+Sections} by McMaster, et al. Using this and the crystallographic
+information from @code{atoms.inp}, @sc{atoms} is able to make several
+calculations useful for XAFS analysis. It approximates the absorption
+depth and edge step size of the material at the edge energy of the
+core atom and estimates three corrections needed for the analysis of
+XAFS data. These corrections are the ``McMaster correction'', the
+energy response of the I0 chamber in a fluorescence experiment, and
+the self-absorption of a thick material in a fluorescence experiment.
+All of these numbers are written at the top of the output file. For
+more information on these calculations consult Chapter 10 of
+@i{Handbook of Synchrotron Radiation, v.1.}
+
+
+@menu
+* Absorption Calculation ::
+* McMaster Correction ::
+* I0 Correction. ::
+* Self-Absorption Correction. ::
+@end menu
+
+@node Absorption Calculation , McMaster Correction , Corrections , Corrections
+@section Absorption Calculation
+
+Proper sample preparation for an XAFS experiment requires knowledge of
+the absorption depth and edge step size of the material of interest.
+The statistics of data collection can be optimized by choosing the
+correct sample thickness. It is also necessary to avoid distortions
+to the data due to thickness and large particle size effects.
+
+@sc{atoms} calculates the total cross section of the material above
+the edge energy of the central atom and divides by the unit cell
+volume. The number obtained, @i{mu&lowbar;total}, has units of
+cm&circ;-1. Thus, if x is the thickness of the sample in cm, the
+x-ray beam passing through the sample will be attenuated by
+@math{exp(-mu_total * x)}.
+
+@sc{atoms} also calculates the change in cross section of the central
+atom below and above the absorption edge and divides by the unit cell
+volume. This number, delta_mu, multiplied by the sample thickness in cm
+gives the approximate edge step in a transmission experiment.
+
+The density of the material is also reported. This number assumes that
+the bulk material will have the same density as the unit cell. It is
+included as an aid to sample preparation.
+
+
+
+@node McMaster Correction , I0 Correction. , Absorption Calculation , Corrections
+@section McMaster Correction
+
+Typically, XAFS data is normalized to a single number representing the
+size of the edge step. While there are compelling reasons to use this
+simple normalization, it can introduce an important distortion to the
+amplitude of the chi(k) extracted from the absorption data. This
+distortion comes from energy response of the bare atom absorption of
+the central atom. This is poorly approximated away from the edge by a
+single number. Because this affects the amplitude of chi(k)
+and not the phase, it can be corrected by including a Debye-Waller
+factor and a fourth cumulant in the analysis of the data. These two
+``McMaster corrections'' are intended to be additive corrections to any
+thermal or structural disorder included in the analysis of the XAFS.
+
+@sc{atoms} uses data from McMaster to construct the bare atom absorption
+for the central atom. @sc{atoms} then regresses a quadratic polynomial
+in energy to the natural logarithm of the constructed central atom
+absorption. Because energy and photo-electron wave number are simply
+related, E is proportional to k^2, the coefficients of this regression
+can be related to the XAFS Debye-Waller factor and fourth cumulant. The
+coefficient of the term linear in energy equals @math{2*sigma_MM^2} and
+the coefficient of the quadratic term equals @math{4/3 *
+sigma_MM^4}. The values of @i{sigma_MM^2} and @i{sigma_MM^2} are written
+at the top of the output file.
+
+
+
+@node I0 Correction. , Self-Absorption Correction. , McMaster Correction , Corrections
+@section I0 Correction.
+
+
+The response of the I0 chamber varies with energy during an XAFS
+experiment. In a fluorescence experiment, the absorption signal is
+obtained by normalizing the IF signal by the I0 signal. There is no
+energy response in the IF signal since all atoms fluoresce at set
+energies. The energy response of I0 is ignored by this normalization.
+At low energies this can be a significant effect. Like the McMaster
+correction, this effect attenuates the amplitude of chi(k) and is is
+well approximated by an additional Debye-Waller factor and fourth
+cumulant.
+
+@sc{atoms} uses the values of the nitrogen, argon and krypton keywords
+in @code{atoms.inp} to determine the content of the I0 chamber by
+pressure. It assumes that the remainder of the chamber is filled with
+helium. It then uses McMaster's data to construct the energy response
+of the chamber and regresses a polynomial to it in the manner
+described above. @i{sigma_I0^2} and
+@i{sigma_I0^4} are also written at the top of the output
+file and intended as additive corrections in the analysis.
+
+
+
+@node Self-Absorption Correction. ,  , I0 Correction. , Corrections
+@section Self-Absorption Correction.
+
+
+If the thickness of a sample is large compared to absorption length of
+the sample and the absorbing atom is sufficiently concentrated in the
+sample, then the amplitude of the chi(k) extracted from the data taken
+on it in fluorescence will be distorted by self-absorption effects in
+a way that is easily estimated. The absorption depth of the material
+might vary significantly through the absorption edge and the XAFS
+wiggles. The correction for this effect is well approximated as
+@example
+   1 + mu_abs / (mu_background+mu_fluor)
+@end example
+
+where @i{mu_background} is the absorption of the non-resonant
+atoms in the material and @i{mu_fluor} is the total absorption
+of the material at the fluorescent energy of the absorbing atom.
+@sc{atoms} constructs this function using the McMaster tables then
+regresses a polynomial to it in the manner described above.
+@i{sigma_self^2} and @i{sigma_self^4} are
+written at the top of the output file and intended as additive
+corrections in the analysis. Because the size of the edge step is
+affected by self-absorption, the amplitude of chi(k) is attenuated
+when normalized to the edge step. Since the amplitude is a measure of
+@i{S0^2}, this is an important effect. The number reported in
+@code{feff.inp} as the amplitude factor is intended to be a
+multiplicative correction to the data or to the measured
+@i{S0^2}.
+
+
+@node Worked Example , Program Notes , Corrections , Top
+@chapter A Worked Example
+
+
+Here is an example of @sc{atoms} in action. The material is Lead
+Titanate, PbTiO3. The crystallographic literature places this material
+in the tetragonal space group @code{P 4 M M}. The data was taken in
+fluorescence at the titanium K-edge. Since the edge energy is around
+5 KeV and the sample was very thick, the I0 and self-absorption
+corrections are expected to be significant. That titanium is the
+central atom is indicated by the keyword @code{core}. @sc{atoms}
+assumes the K-edge of the titanium was probed because the atomic
+number of titanium is less than 57 and the edge was not otherwise
+chosen with the @code{edge} keyword. The I0 chamber was filled with
+92% helium and 8% nitrogen by pressure. This is
+indicated by the @code{nitrogen} keyword. The indexing feature is
+engaged with the @code{index} keyword. The size of the cluster to be
+printed in @code{feff.inp} is chosen with the @code{rmax} keyword.
+
+@example
+title PbTiO3 10K,a=3.885,c=4.139
+space P 4 m m
+a=3.885         c=4.139         nitrogen = 0.08
+index=true      rmax=4.2        core=ti
+atom
+! At.type x    y    z      tag
+  Pb     0.0  0.0  0.0
+  Ti     0.5  0.5  0.5377
+  O      0.5  0.5  0.1118 axial
+  O      0.0  0.5  0.6174 planar
+-------------------------------------------------
+@end example
+
+
+@sc{atoms} produces the output reproduced below. The absorption and
+correction calculations are at the top of the file. All the
+@code{CONTROL} cards are set to 1 and the @code{PRINT} cards are set to 0.
+This will run all four modules of @sc{feff} and produce the default
+output files. Several other useful @sc{feff} cards are printed but
+commented out by an asterisk (@code{*}). The unique potential list is
+constructed in a simple fashion -- the core atom is potential 0 and
+each different atomic species has a single potential. The atom list
+is printed in the format required by @sc{feff}. The atom list has two
+comment columns. The indexed atomic symbol and radial distance are
+written by @sc{atoms} for your use when reading @code{feff.inp} and are
+ignored by @sc{feff}.
+
+@sc{feff} will run to completion using the input file generated by
+@sc{atoms}. It is still likely that the user will want to edit
+@code{feff.inp}. Several assumptions are made by @sc{atoms}
+that might not hold true. The assignment of unique potentials is made
+by a simple algorithm and may not adequately reflect the physics of
+the problem. The @code{CONTROL} cards are such that all four modules of
+@sc{feff} will be run. The @sc{feff} user might want to run
+the modules separately. Values for other cards have been assumed and
+might not be desired. Other cards have been left out entirely.
+Always check your @code{feff.inp} file to be sure it is just
+what you want.
+
+@example
+ * This feff.inp file generated by ATOMS, version 2.50
+ * ATOMS written by and copyright (c) Bruce Ravel, 1998
+
+ * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- *
+ *       total mu =     5269.6 cm^-1, delta mu =      772.6 cm^-1
+ *       specific gravity =  8.057, cluster contains   21 atoms.
+ * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- *
+ *       mcmaster corrections:  0.00093 ang^2 and  0.165E-05 ang^4
+ *       self-abs. corrections: amplitude factor =  1.087
+ *                              0.00004 ang^2 and  0.461E-07 ang^4
+ *       i0 corrections:        0.00118 ang^2 and  0.122E-05 ang^4
+ * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- *
+ *       sum of corrections:    0.00216 ang^2 and  0.292E-05 ang^4
+ * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- * -- *
+
+ TITLE   PbTiO3 10K,a=3.885,c=4.139
+
+ EDGE   K
+ S02   1.0
+
+ *         pot    xsph  fms   paths genfmt ff2chi
+ CONTROL   1      1     1     1     1      1
+ PRINT     1      0     0     0     0      0
+
+ RPATH   0
+ *     r_scf   [ l_scf  n_scf  ca ]
+ SCF   3.5       0      15     0.1
+
+ *         ixc  [ Vr  Vi ]
+ EXCHANGE  0      0   0
+
+ EXAFS
+ *         kmax  [ delta_k  delta_e ]
+ *XANES     4.0     0.5      0.5
+ *         r_fms     [ l_fms ]
+ *FMS       3.87816     0.00000
+ *         emin  emax  resolution
+ *LDOS      -20    20   0.1
+
+ POTENTIALS
+ *   ipot   z  label   l_scmt  l_fms  stoichiometry
+       0   22   Ti     -1      -1       0
+       1    8   O      -1      -1       1
+       2   82   Pb     -1      -1       1
+       3   22   Ti     -1      -1       1
+
+ ATOMS
+   0.00000     0.00000     0.00000    0   Ti_00            0.00000
+   0.00000     0.00000    -1.76280    1   axial_01         1.76280
+  -1.94250     0.00000     0.32988    1   planar_01        1.97031
+   0.00000    -1.94250     0.32988    1   planar_01        1.97031
+   1.94250     0.00000     0.32988    1   planar_01        1.97031
+   0.00000     1.94250     0.32988    1   planar_01        1.97031
+   0.00000     0.00000     2.37620    1   axial_02         2.37620
+   1.94250     1.94250     1.91346    2   Pb_01            3.34783
+  -1.94250    -1.94250     1.91346    2   Pb_01            3.34783
+   1.94250    -1.94250     1.91346    2   Pb_01            3.34783
+  -1.94250     1.94250     1.91346    2   Pb_01            3.34783
+   1.94250     1.94250    -2.22554    2   Pb_02            3.53548
+   1.94250    -1.94250    -2.22554    2   Pb_02            3.53548
+  -1.94250    -1.94250    -2.22554    2   Pb_02            3.53548
+  -1.94250     1.94250    -2.22554    2   Pb_02            3.53548
+   3.88500     0.00000     0.00000    3   Ti_01            3.88500
+   0.00000    -3.88500     0.00000    3   Ti_01            3.88500
+  -3.88500     0.00000     0.00000    3   Ti_01            3.88500
+   0.00000     3.88500     0.00000    3   Ti_01            3.88500
+   0.00000     0.00000    -4.13900    3   Ti_02            4.13900
+   0.00000     0.00000     4.13900    3   Ti_02            4.13900
+ END
+@end example
+
+
+
+@node Program Notes , Denoting Space Groups, Worked Example , Top
+@chapter Program Notes
+
+
+@menu
+* Acknowledgments::
+* Comments on the Fortran Code ::
+* What is new since version 2.42 ::
+* Naming Conventions ::
+* Obtaining::
+* Bibliography::
+@end menu
+
+
+@node Acknowledgments, Comments on the Fortran Code , Program Notes , Program Notes
+@section Acknowledgments
+
+I would like to thank my many colleagues who have been a source of
+help and inspiration. The support of Profs. Ed Stern and John Rehr
+has always been appreciated. I would like to thank Chuck Bouldin,
+Boyan Boyanovich, Julie Cross, Tim Elam, Matt Newville, Hans Stragier,
+Kalle Voss, Steve Zabinsky, and Yanjun Zhang for their contributions,
+helpful criticism and useful suggestions as I have developed this
+program.
+
+The essential calculation in this program is handled in the routine
+@code{equipt}, which decodes the Hermann-Maguin notation and performs
+the proscribed symmetry operations on the input atomic coordinates.
+This routine was written by H. Burzlaff and A. Hountas and is in the
+public domain. Several parts of this program were inspired by the
+program @sc{sexie} by Bernhard Rupp. @sc{sexie} uses input files that
+are similar to @code{atoms.inp} and its database is a good resource for
+composing @code{atoms.inp} files. The original version of the routine
+@code{mucal} was written by P. Bandyopadhyay using data from
+@i{Compilation of X-Ray Cross Section} by McMaster et. al. Several
+of the character string manipulation routines (@code{triml, istrln,
+upper, lower, bwords}) were written by S.I. Zabinsky and M. Newville
+and released for this use.
+
+
+
+
+@node Comments on the Fortran Code , What is new since version 2.42 , Acknowledgments, Program Notes
+@section Comments on the Fortran Code
+
+
+Every routine used by @sc{atoms} has been written in ANSI standard
+Fortran-77. At the time of this writing the code has been found to
+compile and run under many difffernt operating systems. Presently,
+the code is developed on an Intel 486 laptop which runs Linux using
+F2C and GCC for compilation. The code is thus easily ported to any
+machine with a Fortran compiler. The author has run @sc{atoms} under
+four different unixes, MS-DOS, Macintosh System 7.5, Vax-VMS, and
+Open-VMS on an DEC Alpha. At this time, there are four caveats for
+the user:
+
+@enumerate
+@item
+In the main program, the unit for the output files are opened
+with status @code{unknown}. On VMS machines, it is more convenient, but
+not necessary, to open files with @code{new} status to take advantage of
+multiple versions of files. To change this for use on a Vax-VMS
+machine, search for the line in the main program where the variable
+@code{vaxflg} is defined and change it to @code{.true.}
+
+@item
+All run-time messages are written by the subroutine
+@code{messag}. Thus if your machine has particular requirements for
+writing to standard output, @code{messag} should be the only routine
+that you need to alter.
+
+@item
+Tab characters are allowed in the input file, even though the
+handling of tab characters might be machine specific. This is done by
+reading a line from the input file and filtering it through a
+subroutine called @code{untab}, which replaces tab characters with blank
+spaces. @code{untab} is written assuming tab is ASCII character 9. If
+your machine handles this differently, you only need to edit
+@code{untab} or simply don't use tabs.
+
+@item
+The character string manipulation assumes the ASCII character
+set. If your machine does not use ASCII, then you are probably
+familiar with how to alter code for use on your machine. Contact the
+author for which subroutines need to be altered.
+@end enumerate
+
+If you ever have a problem with carriage-control while using
+@sc{atoms} or @sc{feff} with a @code{feff.inp} file generated by
+@sc{atoms}, please contact the author.
+
+@sc{atoms} is delivered with the following parameter values:
+@enumerate
+@item
+ @code{iat = 20}, maximum number of unique atoms
+@item
+ @code{natx = 800}, maximum number of atoms in cluster
+@item
+ @code{ntitx = 9}, maximum number of title lines
+@item
+ @code{maxln = 800}, maximum number of atoms in @code{feff.inp}
+@end enumerate
+
+@sc{feff} limits the size of the cluster in its calculation to 400
+atoms. In @sc{atoms} these values are imposed by parameter
+statements, thus are easy to change. Global parameters such as these
+are set in the main program and passed as arguments to the rest of the
+program. Find these near the beginning of the main program and change
+them to whatever value you want. If you do not know exactly how to do
+this but still think you need to, consult your local Fortran guru or,
+if you must, the author.
+
+The source code for @sc{atoms} is written in a style with mostly lower
+case characters. All executable statements are written in lower case.
+This is a departure from strict adherence to the ANSI standard.
+Care has been taken to make the code insensitive to case. That is, the
+source may be placed in all upper case or all lower case without
+damaging its functionality. The algorithm that parses the input file
+is certainly insensitive to case.
+
+
+@node What is new since version 2.42 , Naming Conventions , Comments on the Fortran Code , Program Notes
+@section What is new since version 2.42
+
+@enumerate
+@item
+ Correct handling of hexagonal space groups. This is the
+most important new feature. My chagrined thanks to the @b{many}
+people who discovered this little problem and took the time to tell me
+about it. I also improved handling of trigonal and rhombohedral space
+groups.
+
+@item
+ Support for notations of all settings of orthorhombic,
+tetragonal, and monoclinic space groups. <sl/atoms/ is now fully
+compliant with all Hermann-Maguin short notations as specified in
+<it/The International Tables of X-Ray Crystallography/, 1969 edition.
+
+@item
+ Better recognition of Schoenflies notation.
+
+@item
+ Improved error messages. Hopefully my error messages are now
+more informative and spelled correctly.
+
+@item
+ Improvements to the calculations using the McMaster tables. I
+have also corrected a few incorrect values that have been found in the
+electronic version of the McMaster tables.
+
+@item
+ Addition of @code{p1} and @code{krypton} keywords.
+
+@item
+ Improved writing of @code{geom.dat} files.
+
+@item
+ Improved handling of input and output filenames.
+
+@item
+ Allow L1 and L2 edges for @code{feff.inp}.
+
+@item
+ Writing of five digits after the decimal places in @code{feff.inp}.
+This matches the precision of <sl/feff/'s degeneracy checker.
+
+@item
+ Writing of edge energy in the @code{HOLE} line of @code{feff.inp}.
+This is for informational purposes only, it serves no purpose in
+<sl/feff/.
+@end enumerate
+
+@node Naming Conventions , Obtaining, What is new since version 2.42 , Program Notes
+@section Naming Conventions
+
+Between versions 2.41 and 2.42, my program had a name change. Earlier
+versions were called @sc{atom}, while later versions are called
+@sc{atoms}, with an @sc{s}. The reason for this change was to avoid
+confusion with the subroutine @code{atom} that is an important part of
+@sc{feff}. Hopefully this reduces confusion rather than adds to it!
+For now, the version number is incremented by 0.01 when minor
+functionality is added and by 0.1 when major functionality is added.
+Bug corrections have been denoted with an incrementing letter appended
+to the version number.
+
+
+@node Obtaining, Bibliography, Naming Conventions , Program Notes
+@section Obtaining New Copies of Feff or of the UWXAFS Analysis Programs
+
+
+If you do not have a license to use the UWXAFS analysis
+programs or @sc{feff} and are interested in obtaining one contact:
+@example
+Ed Stern
+c/o UWXAFS Project
+University of Washington
+Department of Physics, FM-15
+Seattle WA, 98195, USA
+phone: (206) 543-2023
+fax: (206) 543-0635
+electronic mail: stern@@phys.washington.edu
+@end example
+
+or
+
+@example
+John Rehr
+c/o Feff Project
+University of Washington
+Department of Physics, FM-15
+Seattle WA, 98195, USA
+phone: (206) 543-8593
+fax: (206) 543-0635
+electronic mail: jjr@@phys.washington.edu
+@end example
+You should request copies of the licensing agreements for @sc{feff}
+and the UWXAFS programs. These are licensed separately. @sc{atoms}
+is distributed with both packages.
+
+
+@node Bibliography,  , Obtaining, Program Notes
+@section Bibliography
+
+@enumerate
+
+@item
+Burzlaff, H. and A. Hountas. @i{J. Appl. Cryst.} v.15,
+p.464 (1982)
+
+@item
+ Cullity, B.D., @i{Elements of X-Ray Diffraction}
+Addison-Wesley, Reading, MA, 1978
+
+@item
+ Gay, P. @i{The Crystalline State},
+Oliver and Boyd, Edinburgh (1972)
+
+@item
+ Henry, N.F.M. and K. Lonsdale, eds. @i{The International
+Tables For X-Ray
+Crystallography}, v.I, The Kynoch Press, Birmingham, England (1969)
+
+@item
+ Ibers, J.A. and W.C. Hamilton, eds. @i{The International
+Tables For X-Ray
+Crystallography}, v.IV, The Kynoch Press, Birmingham, England (1969)
+
+@item
+ McMaster, W.H. et al. @i{Compilation of X-Ray Cross
+Sections} (LRL, UCRL-50174, sec.2 rev.1969.)
+
+@item
+ Phillips, F.C. @i{An Introduction To Crystallography},
+John Wiley and Sons, Inc. (1971)
+
+@item
+ Ravel, B., M. Newville, J.O. Cross, and C.E. Bouldin,
+Physica B, 208&209 (1995) 145-147.
+
+@item
+ Rehr, J.J., R.C. Albers and S.I. Zabinsky, Phys. Rev. Lett.
+@b{69} (1992) 3397; J.J. Rehr and R.C. Albers Phys. Rev. B
+@b{41} (1990) 8139; J.J. Rehr and S.I. Zabinsky program
+@sc{feff} and @uref{http://krazy.phys.washington.edu/Docs/}
+
+@item
+ Rupp B. program @sc{Sexie} and documentation, PhysiSoft Press.
+
+@item
+ Sorensen, L.B., et al., in @i{Resonant Anomalous X-ray
+Scattering}, Materlik, G., C.J. Sparks, and K. Fischer, eds.
+North Holland, Amsterdam, (1994)
+
+@item
+ Stern, E.A. and S.M. Heald, Basic Principles and Applications
+of EXAFS, ch.10 in @i{Handbook on Synchrotron Radiation}, v.1,
+edited by E.E. Koch, North Holland, (1983)
+
+@item
+ Wycoff, R.W.G. @i{Crystal Structures}, v.I-VI, Wiley and Sons,
+New York (1963)
+@end enumerate
+
+
+@node Denoting Space Groups, Examples, Program Notes , Top
+@appendix Denoting Space Groups
+
+
+This appendix is my attempt to demystify the crazy symbolism used by
+the Hermann-Maguin and Schoenflies conventions. This is by no means
+an adequate explanation of the rich and beautiful field of
+crystallography. For that, I recommend one of the books in the
+bibliography.
+
+An important part of the demystification process is to define some of
+the important terms used to describe crystal symmetries. The words
+@i{system}, @i{Bravais lattice}, @i{crystal class}, and @i{space
+group} have well-defined meanings. The symbols used in each of the
+notation conventions specifically relate the various symmetries of
+crystals. In crystallography, a symmetry operation is defined as a
+sequence of reflections, translations, and/or rotations that map the
+crystal back onto itself in such a way that the crystal after the
+mapping is indistinguishable from the crystal before the mapping.
+
+
+@menu
+* A Quick Review of Crystallography ::
+* Hermann-Maguin::
+* Schoenflies::
+* The Hermann-Maguin Notation ::
+* The Schoenflies Notation ::
+@end menu
+
+@node A Quick Review of Crystallography , Hermann-Maguin, Denoting Space Groups, Denoting Space Groups
+@section A Quick Review of Crystallography
+
+To start, here are some definitions. These will be elaborated below.
+
+@itemize @bullet
+@item System:
+The undecorated shape of the unit cell.
+@item Bravais Lattice:
+An undecorated lattice of equivalent points.
+@item Crystal Class:
+The description of the symmetries about a point.
+@item Space Group:
+The complete description of three dimensional
+crystal symmetries.
+@end itemize
+
+There are seven systems of crystals. The system refers to the shape
+of the undecorated unit cell. They are:
+
+@itemize @bullet
+@item Triclinic:
+a != b != c, alpha != beta != gamma != 90 deg
+
+@item Monoclinic:
+a != b != c, alpha=gamma=90 deg, beta != 90 deg
+@item Orthorhombic:
+a != b != c, alpha=beta=gamma=90 deg
+@item Tetragonal:
+a = b != c, alpha=beta=gamma=90 deg
+@item Hexagonal:
+a = b != c, alpha=beta=90 deg, gamma=120 deg
+@item Trigonal:
+(rhombohedral axes):@*
+a = b = c, alpha=beta=gamma < 120 deg != 90 deg
+(hexagonal axes):@*
+a = b != c, alpha=beta=90 deg, gamma=120 deg
+@item cubic:
+a = b = c, alpha=beta=gamma=90 deg
+@end itemize
+
+There are fourteen Bravais lattices. The Bravais lattices are
+constructed from the simplest translational symmetries applied to the
+seven crystal systems. A @code{P} lattice has decoration only at the
+corners of the unit cell. An @code{I} lattice has decoration at the
+body center of the cell as well as at the corners. An @code{F} lattice
+has decoration at the face centers as well as at the corners. A
+@code{C} lattice has decoration at the center of the (001) face as well
+as at the corners. Likewise @code{A} and @code{B} lattices have
+decoration at the centers of the (100) and (010) faces respectively.
+@code{R} lattices are a special type in the trigonal system which
+possess rhombohedral symmetry.
+
+All seven crystal systems have @code{P} lattices, but not all the
+classes have the other type of Bravais lattices. This is because
+there is degeneracy when all the Bravais lattice types are applied to
+all the crystal systems. For example, a face centered tetragonal cell
+can be expressed as a body centered tetragonal cell by rotating the
+two equivalent axes by 45 deg and shortening them by a factor of
+square root of 2. Considering such degeneracies reduces the possible
+decorations of the seven systems to these 14 unique three dimensional
+lattices:
+
+@example
+  Triclinic     P
+  Monoclinic    P, C
+  Orthorhombic  P, C, I, F
+  Tetragonal    P, I
+  Hexagonal     P
+  Trigonal      P, R
+  Cubic         P, I, F
+@end example
+
+For historic reasons, hexagonal cells are sometimes called @code{C}
+lattices. @sc{atoms} will recognize hexagonal @code{P} cells denoted in
+@code{atoms.inp} by the letter @code{C}. Modern literature usually uses
+the @code{P} designation.
+
+The decorations placed on the Bravais lattices come in 32 flavors
+called classes or point groups which represent the possible symmetries
+within the decorations. Each type of symmetry is defined either by a
+reflection plane, a rotation axis, or a rotary inversion axis. A
+reflection plane can either be a simple mirror plane or a glide plane,
+which defines the symmetry operation of reflecting through a mirror
+followed by translating along a direction in the plane. A rotation
+axis can either define a simple rotation or a screw rotation, which is
+the symmetry operation of rotating about the axis followed by
+translating along that axis. A rotary inversion axis defines the
+symmetry operation of reflecting through a plane followed by rotating
+about an axis in that plane.
+
+These three symmetry types, reflection plane, rotation axis, and
+rotary inversion axis, can be combined in 32 non-degenerate ways. (An
+example degeneracy: the symmetry operation of combining a 180 deg
+rotary inversion with a mirror reflection is identical to the
+operation of a simple 180 deg rotation.) It would seem that the 32
+classes could decorate the 14 Bravais lattices in 458 ways. In fact,
+the number might be larger as there are numerous types of screw axes
+and glide planes. Again, considering degeneracies reduces the total
+number of combinations, leaving 230 unique decorations of the Bravais
+lattices. These are called space groups. The 230 space groups are a
+rigorously complete set of descriptions of crystal symmetries in three
+dimensional space. That is, there may be new crystals but there are
+no new space groups. Here I am only considering space-filling
+crystals with translational periodicity. 3-D Penrose structures and
+quasi-crystals are outside the realm of this appendix and of the code.
+
+
+
+@node Hermann-Maguin, Schoenflies, A Quick Review of Crystallography , Denoting Space Groups
+@section Decoding the Hermann-Maguin Notation
+
+
+The Hermann-Maguin notation uses a set of two to four symbols to
+completely specify the symmetries of a space group. The first symbol
+is always a single letter specifying the Bravais lattice. The next
+three symbols specify the class of the space group. These three
+symbols are some combination of the following characters:
+@example
+    1 2 3 4 5 6 A B C D M N / -
+@end example
+
+
+These are sufficient to completely specify the various planar and
+axial symmetries of the classes and sub-classes. The following is a
+discussion of the most important rules of this convention. Some
+details are neglected but sufficient information is provided to
+appreciate the information contained in the notation.
+
+The second symbol in the Hermann-Maguin notation, i.e. the one after
+the Bravais lattice symbol, tells about symmetries involving the
+primary axis of the cell and/or of the plane normal to the primary
+axis. The primary axis is defined as follows:
+
+@itemize @bullet
+@item Triclinic:
+none
+@item Monoclinic:
+the B axis
+@item Orthorhombic:
+the C axis
+@item Tetragonal:
+the C axis
+@item Hexagonal:
+the C axis
+@item Trigonal:
+the A axis
+@item Cubic:
+the A axis
+@end itemize
+
+In cubic or rhombohedral lattices the axes are equivalent, thus the
+primary axis is arbitrary. For orthorhombic lattices the third and
+fourth symbols specify the symmetries of the a and b axes
+respectively. In other lattices, the last two symbols encode the
+remaining symmetries as described below.
+
+A space filling crystal will always show a symmetry when rotated
+through @math{(360/n)} degrees, where n is one of @{1,2,3,4, or 6@}.
+The second symbol often tells the rotational symmetry properties of
+the primary axis. Notice that all trigonal, tetragonal, and hexagonal
+groups have a @code{3}, @code{4}, or @code{6} respectively in their
+designations. Many orthorhombic and monoclinic groups have a @code{2},
+which is the highest degree of rotational symmetry available to those
+lattices. Cubic groups may possess 2- or 4-fold rotational symmetry
+about the cell axes, thus have @code{2} or @code{4} in the second symbol.
+
+Many second symbols contain a second number. This is the subscripted
+number when the Hermann-Maguin notation is typeset. This refers to the
+type of screw symmetry associated with the axis. A screw symmetric
+lattice is mapped onto itself by an anti-clockwise rotation through
+@math{m * (360/n)} degrees and a translation of @math{1/n} up the
+primary axis. Here n is the degree of rotational symmetry, m is the type
+of screw, and the definition of rotation and direction is
+right-handed. Two types of screw symmetry that are different only in
+handedness of rotation are called enantiomorphous. The enantiomorphous
+pairs are @code{31} and @code{32}, @code{41} and @code{43}, @code{61}
+and @code{65}, and @code{62} and @code{64}.
+
+Several of the second symbols are one or two numbers followed by a
+slash and a letter, e.g. @code{P 63/M M C}. The letter specifies
+the type of reflection plane that is normal to the rotation axis.
+
+There are several types of reflection planes. The simplest is a
+mirror plane, denoted by the letter @code{M}. This says the crystal is
+mapped onto itself by reflecting all atoms through a mirror placed in
+an appropriate plane in the crystal. The letters @code{A}, @code{B}, or
+@code{C} denote glide planes. These map the crystal onto itself by
+reflecting through the plane then translating elements of the crystal
+by half the length of the cell axis normal to the reflection plane. A
+@code{D} glide plane is similar but involves translations of a quarter of the
+cell axis length. Finally, the letter @code{N} denotes a diagonal glide
+plane, which is a reflection through a plane followed by a translation
+in the same plane of half the length of both cell axes in that plane.
+
+The symbol @code{-} before a number indicates a rotary inversion axis.
+This maps the crystal back onto itself by rotating through
+@math{(360/n)} deg then reflecting through a plane parallel to the
+rotation axis.
+
+A final word about the Hermann-Maguin notation. All cubic space groups
+have four three-fold rotational axes through the body diagonals. Thus
+all cubic groups have the number 3 as the third symbol.
+
+
+
+@node Schoenflies, The Hermann-Maguin Notation , Hermann-Maguin, Denoting Space Groups
+@section Decoding the Schoenflies Notation
+
+
+The Schoenflies notation uses a set of three symbols to classify sets
+of space groups by their dominant symmetry features. The letters
+@code{C}, @code{D}, @code{S}, @code{T}, and @code{O} denote the character of the
+center of symmetry. The symbol after the underscore (the subscript
+when typeset) indicates the presence of symmetry planes and additional
+symmetry axes. The number after the caret (the superscript when
+typeset) is simply an indexing of all the distinct space groups that
+share major symmetry properties. In the older literature, @code{D}
+symmetry centers are occasionally referred to as @code{V}. @sc{atoms}
+will probably understand a space group referred to by the letter
+@code{V}, but using the @code{D} notation is recommended.
+
+The letter @code{C} indicates an rotation axis where the crystal is
+mapped onto itself when rotated by (360/n) deg, where n is the number
+after the underscore. An H after the underscore indicates the presence
+of a plane of symmetry normal to the rotation axis. A @code{V} after the
+underscore indicates one or two planes of symmetry parallel to the
+rotation axis. The letter @code{S} after the underscore indicates a
+normal plane of symmetry in a crystal where the degree of rotational
+symmetry is 1. The letter @code{I} after the underscore indicates the
+presence of a point center of symmetry.
+
+The letter @code{S} indicates a rotary inversion axis. The degree of
+rotation is the number after the underscore.
+
+The letter @code{D} denotes a primary rotation axis with another
+rotation axis normal to it. The degree of rotation of both axes is the
+number after the underscore. The letters @code{H} and @code{V} have the
+same meanings as they did in groups beginning with the letter
+@code{C}. The letter @code{D} indicates the presence of a diagonal
+symmetry plane.
+
+Cubic groups are all specified by the letters @code{T} and @code{O}.
+@code{T} indicates tetrahedral symmetry, that is, the presence of the
+four three-fold axes and three two-fold axes. @code{O} indicates
+octahedral symmetry, i.e. four three-fold axes with three four-fold
+axes. @code{H} and @code{D} after the underscore carry the same meaning
+as before.
+
+
+
+@node The Hermann-Maguin Notation , The Schoenflies Notation , Schoenflies, Denoting Space Groups
+@section The Hermann-Maguin Notation
+
+@subsection Notation for the Standard Settings
+
+@example
+      2 Triclinic and 13 Monoclinic Space Groups
+
+ P 1         P -1        P 2         P 21        C 2         P M
+ P C         C M         C C         P 2/M       P 21/M      C 2/M
+ P 2/C       P 21/C      C 2/C
+
+
+      59 Orthorhombic Space Groups
+
+ P 2 2 2     P 2 2 21    P 21 21 2   P 21 21 21  C 2 2 21    C 2 2 2
+ F 2 2 2     I 2 2 2     I 21 21 21  P M M 2     P M C 21    P C C 2
+ P M A 2     P C A 21    P N C 2     P M N 21    P B A 2     P N A 21
+ P N N 2     C M M 2     C M C 21    C C C 2     A M M 2     A B M 2
+ A M A 2     A B A 2     F M M 2     F D D 2     I M M 2     I B A 2
+ I M A 2     P M M M     P N N N     P C C M     P B A N     P M M A
+ P N N A     P M N A     P C C A     P B A M     P C C N     P B C M
+ P N N M     P M M N     P B C N     P B C A     P N M A     C M C M
+ C M C A     C M M M     C C C M     C M M A     C C C A     F M M M
+ F D D D     I M M M     I B A M     I B C A     I M M A
+
+
+       68 Tetragonal Space Groups
+
+ P 4         P 41        P 42        P 43        I 4         I 41
+ P -4        I -4        P 4/M       P 42/M      P 4/N       P 42/N
+ I 4/M       I 41/A      P 4 2 2     P 4 21 2    P 41 2 2    P 41 21 2
+ P 42 2 2    P 42 21 2   P 43 2 2    P 43 21 2   I 4 2 2     I 41 2 2
+ P 4 M M     P 4 B M     P 42 C M    P 42 N M    P 4 C C     P 4 N C
+ P 42 M C    P 42 B C    I 4 M M     I 4 C M     I 41 M D    I 41 C D
+ P -4 2 M    P -4 2 C    P -4 21 M   P -4 21 C   P -4 M 2    P -4 C 2
+ P -4 B 2    P -4N2      I -4 M 2    I -4 C 2    I -42 M     I -42 D
+ P 4/M M M   P 4/M C C   P 4/N B M   P 4/N N C   P 4/M B M   P 4/M N C
+ P 4/N M M   P 4/N C C   P 42/M M C  P 42/M C M  P 42/N B C  P 42/N N M
+ P 42/M B C  P 42/M N M  P 42/N M C  P 42/N C M  I 4/M M M   I 4/M C M
+ I 41/A M D  I 41/A C D
+
+
+        25 Trigonal Space Groups
+
+ P 3         P 3 1       P 32        R3          P -3        R -3
+ P 3 1 2     P 3 2 1     P 31 1 2    P 31 2 1    P 32 1 2    P 32 2 1
+ R 32        P 3 M 1     P 3 1 M     P 3 C 1     P 3 1 C     R 3 M
+ R 3C        P -3 1 M    P -3 1 C    P -3 M 1    P -3 C 1    R -3 M
+ R -3 C
+
+
+       27 Hexagonal Space Groups
+
+ P 6         P 61        P 65        P 62        P 64        P 63
+ P -6        P 6/M       P 63/M      P 62 2      P 61 2 2    P 65 2 2
+ P 62 2 2    P 64 2 2    P 63 2 2    P 6 M M     P 6 C C     P 63 C M
+ P 63 M C    P -6 M 2    P -6 C 2    P -6 2 M    P -62 C     P 6/M M M
+ P 6/M C C   P 63/M C M  P 63/M M C
+
+
+      36 Cubic Space Groups
+
+ P 2 3       F 2 3       I 2 3       P 21 3      I 21 3      P M 3
+ P N 3       F M 3       F D 3       I M 3       P A 3       I A 3
+ P 4 3 2     P 42 3 2    F 4 3 2     F 41 3 2    I 4 3 2     P 43 3 2
+ P 41 3 2    I 41 3 2    P -4 3 M    F -4 3 M    I -4 3 M    P -4 3 N
+ F -4 3 C    I -4 3 D    P M 3 M     P N 3 N     P M 3 N     P N 3 M
+ F M 3 M     F M 3 C     F D 3 M     F D 3 C     I M 3 M     I A 3 D
+
+@end example
+
+
+@subsection Nonstandard Notations
+
+Here are the notations for the alternate settings of the monoclinic
+and orthorhombic space groups. Also presented are the notations for
+tetragonal space groups that have been rotated by 45 degrees resulting
+in a unit cell of doubled volume and of a different Bravais type.
+
+In an monoclinic or orthorhombic space group, the Hermann-Maguin
+symbols are identical for the various settings if none of the three
+axes possess special symmetry properties. In this case the three axes
+are distinguished only by length and the symbol is the same for all
+settings.
+
+The column headings below indicate the orientations of the alternative
+settings relative to the standard setting. For instance, @code{cab} is
+a setting with axes and coordinates cyclically permuted from the
+standard setting. This is equivalent to a rotation of 120 degrees
+about an axis in a <111> direction relative to the Cartesian
+axes. The setting @code{a-cb} is rotated by 90 degrees about the A
+axis. Thus the @code{B} and @code{C} axes are swapped and the @code{y} and
+@code{z} coordinates in the standard setting map onto the @code{z} and
+@code{-y} coordinates of the alternate setting. In @sc{atoms}, when an
+alternative setting is specified in @code{atoms.inp}, the axes and
+coordinates are multiplied by the appropriate permutation matrix onto
+the standard setting. The positions in the unit cell are expanded
+according to the Hermann-Maguin symbol for the standard setting. The
+contents of the unit cell are then permuted back to the specified
+setting.
+
+@example
+        Symbols for Monoclinic Groups of Various Settings
+
+standard                     |         standard
+  abc            bca         |          abc             bca
+-----------------------------------------------------------------
+  P 2     both settings      |          P 21      both settings
+  B 2    or     C 2          |          P M       both settings
+  P B    or     P C          |          B M      or     C M
+  B B    or     C C          |          P 2/M     both settings
+  P 21/M  both settings      |          B 2/M    or     C 2/M
+  P 2/B  or     P 2/C        |          P 21/B   or     P 2/C
+  B 2/B  or     C 2/C        |
+
+
+
+	Symbols for Orthorhombic Groups of Various Settings
+
+ standard
+   abc        cab        bca        a-cb       ba-c       -cab
+-----------------------------------------------------------------
+ P 2 2 2    		each setting
+ P 2 2 21   P 21 2 2   P 2 21 2   P 2 21 2   P 2 2 21   P 21 2 2
+ P 21 21 2  P 2 21 21  P 21 2 21  P 21 2 21  P 21 21 2  P 2 21 21
+ P 21 21 21 		each setting
+ C 2 2 21   A 21 2 2   B 2 21 2   B 2 21 2   C 2 2 21   A 21 2 2
+ C 2 2 2    A 2 2 2    B 2 2 2    B 2 2 2    C 2 2 2    A 2 2 2
+ F 2 2 2    		each setting
+ I 2 2 2    		each setting
+ I 21 21 21 		each setting
+ P M M 2    P 2 M M    P M 2 M    P M 2 M    P M M 2    P 2 M M
+ P M C 21   P 21 M A   P B 21 M   P M 21 B   P C M 21   P 21 A M
+ P C C 2    P 2 A A    P B 2 B    P B 2 B    P C C 2    P 2 A A
+ P M A 2    P 2 M B    P C 2 M    P M 2 A    P B M 2    P 2 C M
+ P C A 21   P 21 A B   P C 21 B   P B 21 A   P B C 21   P 21 C A
+ P N C 2    P 2 N A    P B 2 N    P N 2 B    P C N 2    P 2 A N
+ P M N 21   P 21 M N   P N 21 M   P M 21 N   P N M 21   P 2 N M
+ P B A 2    P 2 C B    P C 2 A    P C 2 A    P B A 2    P 2 C B
+ P N A 21   P 21 N B   P C 21 N   P N 21 A   P B N 21   P 2 C N
+ P N N 2    P 2 N N    P N 2 N    P N 2 N    P N N 2    P 2 N N
+ C M M 2    A 2 M M    B M 2 M    B M 2 M    C M M 2    A 2 M M
+ C M C 21   A 21 M A   B B 21 M   B M 21 B   C C M 21   A 21 A M
+ C C C 2    A 2 C A    B B 2 C    B B 2 B    C C C 2    A 2 A A
+ A M M 2    B 2 M M    C M 2 M    A M 2 M    B M M 2    C 2 M M
+ A B M 2    B 2 C M    C M 2 A    A C 2 M    B M A 2    C 2 M B
+ A M A 2    B 2 M B    C C 2 M    A M 2 A    B B M 2    C 2 C M
+ A B A 2    B 2 C B    C C 2 A    A C 2 A    B B A 2    C 2 C B
+ F M M 2    F 2 M M    F M 2 M    F M 2 M    F M M 2    F 2 M M
+ F D D 2    F 2 D D    F D 2 D    F D 2 D    F D D 2    F 2 D D
+ I M M 2    I 2 M M    I M 2 M    I M 2 M    I M M 2    I 2 M M
+ I B A 2    I 2 C B    I C 2 A    I C 2 A    I B A 2    I 2 C B
+ I M A 2    I 2 M B    I C 2 M    I M 2 A    I B M 2    I 2 C M
+ P M M M    		each setting
+ P N N N    		each setting
+ P C C M    P M A A    P B M B    P B M B    P C C M    P M A A
+ P B A N    P N C B    P C N A    P C N A    P B A N    P N C B
+ P M M A    P B M M    P M C M    P M A M    P M M B    P C M M
+ P N N A    P B N N    P N C N    P N A N    P N N B    P C N N
+ P M N A    P B M N    P N C M    P M A N    P N M B    P C N M
+ P C C A    P B A A    P B C B    P B A B    P C C B    P C A A
+ P B A M    P M C B    P C M A    P C M A    P B A M    P M C B
+ P C C N    P N A A    P B N B    P B N B    P C C N    P N A A
+ P B C M    P M C A    P B M A    P C M B    P C A M    P M A B
+ P N N M    P M N N    P N M N    P N M N    P N N M    P M N N
+ P M M N    P N M M    P M N M    P M N M    P M M N    P N M M
+ P B C N    P N C A    P B N A    P C N B    P C A N    P N A B
+ P B C A    P B C A    P B C A    P C A B    P C A B    P C A B
+ P N M A    P B N M    P M C N    P N A M    P M N B    P C M N
+ C M C M    A M M A    B B M M    B M M B    C C M M    A M A M
+ C M C A    A B M A    B B C M    B M A B    C C M B    A C A M
+ C M M M    A M M M    B M M M    B M M M    C M M M    A M M M
+ C C C M    A M A A    B B M B    B B M B    C C C M    A M A A
+ C M M A    A B M M    B M C M    B M A M    C M M B    A C M M
+ C C C A    A B A A    B B C B    B B A B    C C C B    A C A A
+ F M M M    		each setting
+ F D D D    		each setting
+ I M M M    		each setting
+ I B A M    I M C B    I C M A    I C M A    I B A M    I M C B
+ I B C A    I B C A    I B C A    I C A B    I C A B    I C A B
+ I M M A    I B M M    I M C M    I M A M    I M M B    I C M M
+
+
+
+        Symbols for Tetragonal Groups of Various Orientations
+
+standard                   |   standard
+  abc        (a+b)(b-a)c   |     abc                (a+b)(b-a)c
+----------------------------------------------------------------------
+ P 4         or C 4        |    P 41            or      C 41
+ P 42        or C 42       |    P 43            or      C 43
+ I 4         or F 4        |    I 41            or      F 41
+ P -4        or C -4       |    I -4            or      F -4
+ P 4/M       or C 4/M      |    P 42/M          or      C 42/M
+ P 4/N       or C 4/A      |    P 42/M          or      C 42/A
+ I 4/M       or F 4/M      |    I 41/A          or      F 41/D
+ P 4 2 2     or C 4 2 2    |    P 4 2 21        or      C 4 2 21
+ P 41 2 2    or C 41 2 2   |    P 41 2 21       or      C 41 2 21
+ P 42 2 2    or C 42 2 2   |    P 42 2 21       or      C 42 2 21
+ P 43 2 2    or C 43 2 2   |    P 43 2 21       or      C 43 2 21
+ I 4 2 2     or F 4 2 2    |    I 41 2 2        or      F 41 2 2
+ P 4 M M     or C 4 M M    |    P 4 B M         or      C 4 M B
+ P 42 C M    or C 42 M C   |    P 42 N M        or      C 42 M N
+ P 4 C C     or C 4 C C    |    P 4 N C         or      C 4 C N
+ P 42 M C    or C 42 C M   |    P 42 B C        or      C 42 C B
+ I 4 M M     or F 4 M M    |    I 4 C M         or      F 4 M C
+ I 41 M D    or F 41 D M   |    I 41 C D        or      F 41 D C
+ P -4 2 M    or C -4 M 2   |    P -4 2 C        or      C -4 C 2
+ P -4 21 M   or C -4 M 21  |    P -4 21 C       or      C -4 C 21
+ P -4 M 2    or C -4 2 M   |    P -4 C 2        or      C -4 2 C
+ P -4 B 2    or C -4 2 B   |    P -4 N 2        or      C -4 2 N
+ I -4 M 2    or F -4 2 M   |    I -4 C 2        or      F -4 2 C
+ I -4 2 M    or F -4 M 2   |    I -4 2 D        or      F -4 D 2
+ P 4/M M M   or C 4/M M M  |    P 4/M C C       or      C 4/M C C
+ P 4/N B M   or C 4/A M B  |    P 4/N N C       or      C 4/A C N
+ P 4/M B M   or C 4/M M B  |    P 4/M N C       or      C 4/M C N
+ P 4/N M M   or C 4/A M M  |    P 4/N C C       or      C 4/A C C
+ P 42/M M C  or C 42/M C M |    P 42/M C M      or      C 42/M M C
+ P 42/N B C  or C 42/A C B |    P 42/N N M      or      C 42/A M N
+ P 42/M B C  or C 42/M C B |    P 42/M N M      or      C 42/M M N
+ P 42/N M C  or C 42/A C M |    P 42/N C M      or      C 42/A M C
+ I 4/M M M   or F 4/M M M  |    I 4/M C M       or      F 4/M M C
+ I 41/A M D  or F 41/D D M |    I 41/A C D      or      F 41/D D C
+@end example
+
+
+@node The Schoenflies Notation ,  , The Hermann-Maguin Notation , Denoting Space Groups
+@section The Schoenflies Notation
+
+
+@example
+      2 Triclinic and 13 Monoclinic Space Groups
+
+ C_1^1       C_I^1       C_2^1       C_2^2       C_2^3        C_S^1
+ C_S^2       C_S^3       C_S^4       C_2H^1      C_2H^2       C_2H^3
+ C_2H^4      C_2H^5      C_2H^6
+
+
+    59 orthorhombic space groups
+
+ D_2^1       D_2^2       D_2^3       D_2^4       D_2^5        D_2^6
+ D_2^7       D_2^8       D_2^9       C_2V^1      C_2V^2       C_2V^3
+ C_2V^4      C_2V^5      C_2V^6      C_2V^7      C_2V^8       C_2V^9
+ C_2V^10     C_2V^11     C_2V^12     C_2V^13     C_2V^14      C_2V^15
+ C_2V^16     C_2V^17     C_2V^18     C_2V^19     C_2V^20      C_2V^21
+ C_2V^22     D_2H^1      D_2H^2      D_2H^3      D_2H^4       D_2H^5
+ D_2H^6      D_2H^7      D_2H^8      D_2H^9      D_2H^10      D_2H^11
+ D_2H^12     D_2H^13     D_2H^14     D_2H^15     D_2H^16      D_2H^17
+ D_2H^18     D_2H^19     D_2H^20     D_2H^21     D_2H^22      D_2H^23
+ D_2H^24     D_2H^25     D_2H^26     D_2H^27     D_2H^28
+
+
+    68 Tetragonal space groups
+
+ C_4^1       C_4^2       C_4^3       C_4^4       C_4^5        C_4^6
+ S_4^1       S_4^2       C_4H^1      C_4H^2      C_4H^3       C_4H^4
+ C_4H^5      C_4H^6      D_4^1       D_4^2       D_4^3        D_4^4
+ D_4^5       D_4^6       D_4^7       D_4^8       D_4^9        D_4^10
+ C_4V^1      C_4V^2      C_4V^3      C_4V^4      C_4V^5       C_4V^6
+ C_4V^7      C_4V^8      C_4V^9      C_4V^10     C_4V^11      C_4V^12
+ D_2D^1      D_2D^2      D_2D^3      D_2D^4      D_2D^5       D_2D^6
+ D_2D^7      D_2D^8      D_2D^9      D_2D^10     D_2D^11      D_2D^12
+ D_4H^1      D_4H^2      D_4H^3      D_4H^4      D_4H^5       D_4H^6
+ D_4H^7      D_4H^8      D_4H^9      D_4H^10     D_4H^11      D_4H^12
+ D_4H^13     D_4H^14     D_4H^15     D_4H^16     D_4H^17      D_4H^18
+ D_4H^19     D_4H^20
+
+
+    25 Trigonal space groups
+
+ C_3^1        C_3^2      C_3^3       C_3^4       C_3I^1       C_3I^2
+ D_3^1        D_3^2      D_3^3       D_3^4       D_3^5        D_3^6
+ D_3^7        C_3V^1     C_3V^2      C_3V^3      C_3V^4       C_3V^5
+ C_3V^6       D_3D^1     D_3D^2      D_3D^3      D_3D^4       D_3D^5
+ D_3D^6
+
+
+    27 Hexagonal space groups
+
+ C_6^1        C_6^2      C_6^3        C_6^4      C_6^5        C_6^6
+ C_3H^1       C_6H^1     C_6H^2       D_6^1      D_6^2        D_6^3
+ D_6^4        D_6^5      D_6^6        C_6V^1     C_6V^2       C_6V^3
+ C_6V^4       D_3H^1     D_3H^2       D_3H^3     D_3H^4       D_6H^1
+ D_6H^2       D_6H^3     D_6H^4
+
+
+    36 Cubic space groups
+
+ T^1          T^2        T^3          T^4        T^5          T_H^1
+ T_H^2        T_H^3      T_H^4        T_H^5      T_H^6        T_H^7
+ O^1          O^2        O^3          O^4        O^5          O^6
+ O^7          O^8        T_D^1        T_D^2      T_D^3        T_D^4
+ T_D^5        T_D^6      O_H^1        O_H^2      O_H^3        O_H^4
+ O_H^5        O_H^6      O_H^7        O_H^8      O_H^9        O_H^10
+@end example
+
+
+
+@node Examples,  , Denoting Space Groups, Top
+@appendix 40 Example Input Files
+
+
+
+The next several pages have numerous examples of @code{atoms.inp} files
+that produce the correct output. In these examples you might find a
+material of interest or its isomorph and you will certainly get clues
+for making @sc{atoms} work the way you want. By far the most useful
+resource for the crystallographic data needed for these input files is
+the @i{Crystal Structures} series by R.W.G. Wyckoff.
+
+These examples and many others are available on the Internet. The
+World wide Web URL for a big list of input files is
+@uref{http://krazy.phys.washington.edu/html/atoms.html}.
+@c The FTP
+@c address is @code{krazy.phys.washington.edu}. Log in as anonymous and
+@c give your e-mail address as a password. The example input files are
+@c in the directory @code{/pub/Tools/Atoms/}. Please feel free to
+@c contribute new input files that you have used. Upload them by FTP to
+@c the directory @code{/pub/Incoming/}.
+
+
+@menu
+* Pure Elements ::
+* Common Lattice Types ::
+* Binary and Trinary Compounds ::
+* High Temperature Superconductors. ::
+@end menu
+
+@node Pure Elements , Common Lattice Types , Examples, Examples
+@section Pure Elements
+
+
+These are examples of @code{atoms.inp} files for several pure
+elements.
+
+@table @r
+@item The following elements commonly crystallize in the bcc structure:
+Li, Na, K, V, Cr, Fe, Rb, Nb, Mo, Cs, Ba, Ta, W, Eu
+@item The following elements commonly crystallize in the fcc structure:
+Al, Ca, Ni, Cu, Sr, Rh, Pd, Ag, Ir, Pt, Au, Pb, Ce, Yb, Th
+@item The following elements commonly crystallize in the hcp structure:
+Be, Mg, Sc, Ti, Co, Zn, Y, Zr, Tc, Ru, Cd, Hf, Re, Os, Tl, Gd,
+Tb, Dy, Ho, Er, Tm, Lu
+@item The following elements commonly crystallize in the diamond structure:
+C, Si, Ge, alpha-Sn
+@item Included in this section are these examples of disordered pure elements:
+Ga, In, S, white-Sn, As
+@end table
+
+
+@example
+           title Cr  metal  bcc a=2.88
+           space bcc         ! shorthand for I M 3 M
+           rmax=6.0   a=2.88
+           atom
+           !   At.type    x    y    z
+                Cr       0.0  0.0  0.0
+           --------------------------------------
+
+
+           title Cu  metal  fcc a=3.61
+           space fcc           ! shorthand for F M 3 M
+           rmax=6.0   a=3.61
+           out=feff.inp  ! index=true
+           atom
+           !   At.type    x    y    z
+                Cu       0.0  0.0  0.0
+           --------------------------------------
+
+
+           title Ti  metal  hcp a=2.950  c=4.8646
+           space hcp           ! shorthand for P 63/M M C
+           rmax=6.0   a=2.95   c=4.6846
+           out=feff.inp  ! index=true
+           atom
+           !   At.type    x        y        z
+                ti       0.33333  0.66667  0.25
+           --------------------------------------
+
+
+           title   alpha-tin  diamond structure
+           a = 6.485  space diamond    ! shorthand for I D 3 M
+           atom
+           !   At.type    x      y      z
+                sn       0.125  0.125  0.125
+           --------------------------------------
+
+
+           title  Gallium, orthorhombic
+           space D_2h^18         ! same as C m c a
+           a=4.5107  b=7.6448   c=4.5167
+           atom
+             Ga   0.0  0.1525  0.0785
+           --------------------------------------
+
+
+           title Indium, tetragonal
+           space   I 4/m m m
+           % note that case is unimportant
+           a=3.2446 C=4.9367
+           atom
+           !   At.type   x    y    z   tag
+                In      0.0  0.0  0.0
+           --------------------------------------
+
+
+           title Rhombic Sulfur
+           !  Wyckoff "Crystal Structures" vol.1 pp 33-34
+           !  correct with this origin
+           !  see the spinel input for an example of the SHIFT keyword
+           space   F D D D
+           rmax=10.0   a=10.467  b=12.870  c=24.493
+           core = S3
+           atom
+           ! At.type    x        y       z        tag
+              S       0.8554   0.9526   0.9516    S1
+              S       0.7844   0.0301   0.0763    S2
+              S       0.7069   0.9795   0.0040    S3
+              S       0.7862   0.9073   0.1290    S4
+           --------------------------------------
+
+
+           title  white tin
+           Space  D_4H^19         ! same as  I 41/a m d
+           rmax = 7.00
+           a    = 5.8197    c = 3.175
+           atom
+           ! At.type    x    y      z
+              Sn       0.0  0.25  -0.125
+           --------------------------------------
+
+
+           title  rhombohedral arsenic
+           space R -3 m
+           a = 4.123   alpha = 54.16667
+           atom
+              As   0.226   0.226   0.226
+           --------------------------------------
+@end example
+
+
+@node Common Lattice Types , Binary and Trinary Compounds , Pure Elements , Examples
+@section Common Lattice Types
+
+
+These are examples of @code{atoms.inp} files for the following
+common lattice types:
+
+@itemize @bullet
+@item
+zincblende
+@item
+sodium chloride
+@item
+cesium chloride
+@item
+spinel
+@item
+perovskite
+@item
+wurtzite
+@item
+ilmenite
+@end itemize
+
+
+
+@example
+      title    zinc sulfide (zincblende) structure
+      space zns           ! shorthand for F -4 3 M
+      a 3.615 rmax  8.0   core = Zn
+      atom
+        Zn   0.0   0.0   0.0
+        S    0.25  0.25  0.25
+      ----------------------------------------------
+
+
+      title   FeO, sodium chloride structure
+      space salt         ! shorthand for F M 3 M
+      rmax=6.0   a=3.3108               core=Fe
+      atom
+      !   At.type    x    y    z        cent.
+           Fe       0.0  0.0  0.0
+           O        0.5  0.5  0.5
+      ----------------------------------------------
+
+
+      title  CsCl Cesium Chloride structure
+      space = cscl        ! shorthand for P M 3 M
+      a = 4.11   core = Cs   rmax = 8.22
+      atom
+         Cs    0.0    0.0    0.0
+         Cl    0.5    0.5    0.5
+      ----------------------------------------------
+
+
+      title   Cubic Spinel Structure, MgAl2O4
+      Space  f d 3 m
+      rmax=7  a=8.0800   !from Wyckoff
+      shift = -0.125 -0.125 -0.125
+      core = Mg
+      atom
+      ! At.type  x        y       z      cent.
+         Mg     0.0      0.0     0.0
+         Al     0.625    0.625   0.625
+         O      0.387    0.387   0.387
+      ! u=0.387 in Wyckoff, shift coords
+      ! by (-1/8,-1/8,-1/8)
+      ----------------------------------------------
+
+
+      title    cubic EuTiO3, perovskite structure
+      rmax=7.0     a=3.90      Space  P M 3 M    core = Ti
+      atom
+      ! At.type  x        y       z      cent.
+         Eu     0.0      0.0     0.0
+         Ti     0.5      0.5     0.5
+         O      0.0      0.5     0.5
+      ----------------------------------------------
+
+
+      title  ZnS hexagonal wurtzite structure
+      space = P 63 m c     ! same as c_6v^4
+      a=3.81  c=6.23       ! gamma set to 120 by ATOM
+      core = S
+      atom
+         Zn    0.33333  0.66666  0.0
+         S     0.33333  0.66666  0.375
+      ----------------------------------------------
+
+
+      title  alpha-Fe2O3, ilmenite structure
+      Space  C_3I^2         ! same as R -3
+      rmax = 7.00     core  = Fe    a    = 5.538    alpha = 54.6833333
+      atom
+      ! At.type    x        y       z
+         Fe       .358     .358    .358
+         Ti       .142     .142    .142
+         O        .555    -.04     .235
+      ----------------------------------------------
+@end example
+
+
+@node Binary and Trinary Compounds , High Temperature Superconductors. , Common Lattice Types , Examples
+@section Binary and Trinary Compounds
+
+
+Here are various examples of crystal structures containing two or
+three atomic species. Included here are:
+
+@itemize @bullet
+@item
+Aluminum Oxide
+@item
+Aluminum Boride
+@item
+alpha-Iron Oxide
+@item
+alpha-Lead Oxide
+@item
+Boron Nitride (graphitic)
+@item
+Boron Nitride (hexatic)
+@item
+Calcium Carbide
+@item
+Fluorite (PrO_2)
+@item
+Cadmium Chloride
+@item
+Tenorite (Copper Monoxide)
+@item
+Cinnebar (HgS)
+@item
+Potassium Nitrofluorite (K_2NiF_4)
+@item
+Hausmannite (Mn_3O_4)
+@item
+Cassiterite (MnO_2)
+@item
+Cubic Bixbyite (Yttria, Y_2O_3)
+@item
+Ferroelectric Distorted Perovskite (PbTiO_3)
+@item
+Antiferroelectric Distorted Perovskite (PbZrO_3)
+@item
+Platinum Silicide (PtSi)
+@end itemize
+
+@example
+       title Al2O3
+       Space  R -3 C      ! same as D_3D^6
+       a=4.7628   c=13.0032   gamma=120    core = Al
+       rmax=7
+       atom
+       ! At.type  x        y       z      cent.
+          Al     0.0      0.0     0.352
+          O      0.306    0.0     0.25
+       -------------------------------------------------
+
+
+       title  AlB2, hexagonal aluminum boride structure
+       space P -3 M 1
+       rmax=7.0  a=3.009   c=3.262  gamma=120   core = Al
+       atom
+         Al      0.0     0.0     0.0
+         B       0.33333 0.66667 0.5
+       -------------------------------------------------
+
+
+       title  alpha-Fe2O3
+       Space  D_3d^6     ! same as R -3 C
+       rmax = 7.00      core  = iron
+       a    = 5.4135    alpha = 55.2833333
+       atom
+       ! At.type    x        y       z       tag
+          Fe       .355     .355    .355     iron
+          O        .550    -.050    .25      oxy
+       -------------------------------------------------
+
+
+       title  alpha Lead Oxide  (PbO2)
+       space p b c n
+       rmax=6.0  a=4.947  b=5.951   c=5.497   core = Pb
+       atom
+         Pb   0.0      0.178    0.25
+         O    0.276    0.410    0.425
+       -------------------------------------------------
+
+
+       title BN   primary structure
+       space p 63/m m c
+       a 2.504 c 6.661 rmax  8.0    core B
+       atom
+         B   0.333333  0.666667   0.25
+         N   0.333333  0.666667   0.75
+       -------------------------------------------------
+
+
+       title BN   hexagonal structure
+       space hcp
+       a 2.504  c 10.01   rmax  8.0  core B
+       atom
+         B   0.0  0.0  0.0
+         N   0.0  0.0  0.333333
+       -------------------------------------------------
+
+
+       title  CaC2, calcium carbide structure
+       rmax=7.0   Space  D_4h^17
+       a=3.87    c=6.37    core Ca
+       atom
+       ! At.type  x         y        z       tag
+           Ca    0.0      0.0       0.0
+           C     0.0      0.0       0.406
+       -------------------------------------------------
+
+
+       title  PrO2  Fluorite structure
+       space f m 3 m
+       a=4.9    edge=k   rmax=10   core = Pr
+       atom
+         Pr    0.0    0.0   0.0
+         O     0.25   0.25  0.25
+       -------------------------------------------------
+
+
+       title   Cadmium Chloride structure (hexagonal)
+       space R -3 M
+       a=3.854   c=17.457    gamma=120
+       rmax=6.0              core = Cd
+       atom
+         Cd   0.0   0.0   0.0
+         Cl   0.0   0.0   0.25
+       -------------------------------------------------
+
+
+       title monoclinic CuO (tenorite structure)
+       space c 2/c         ! same as C_2h^6
+       a=4.653  b=3.410  c=5.108  beta=99.4833   core = Cu
+       atom
+         Cu    0.25    0.25    0.0
+         O     0.0     0.584   0.25
+       -------------------------------------------------
+
+
+       title   HgS, cinnebar,  trigonal
+       a=4.146  c=9.497  gamma=120   core = Hg
+       space = P 31 2 1
+       atom
+         Hg   0.720   0.0    0.333333
+         S    0.485   0.0    0.833333
+       -------------------------------------------------
+
+
+       title  K2 Ni F4 structure
+       space I 4/m m m
+       a=3.8    c=13.2       core =  nick.
+       atom
+       !                              tag
+         K     0.0    0.0    0.36   pot.
+         Ni    0.0    0.0    0.0    nick.
+         O     0.0    0.5    0.0    O1
+         O     0.0    0.0    0.18   O2
+       -------------------------------------------------
+
+
+       title  Mn3O4, hausmannite structure
+       a  5.75         c  9.42          core Mn2
+       rmax=7.0    Space  i 41/a m d
+       atom
+       ! At.type  x        y       z          tag
+          Mn     0.0      0.75    0.125       Mn1
+          Mn     0.0      0.0     0.5         Mn2
+          O      0.0      0.25    0.375
+       -------------------------------------------------
+
+
+       title  MnO2, cassiterite structure
+       a  4.396         c  2.871        core Mn
+       rmax=6.0    Space  P 42/M N M
+       atom
+       ! At.type  x        y       z      tag
+          Mn     0.0      0.0     0.0
+          O       .3       .3     0.0
+       -------------------------------------------------
+
+
+       title   sodium chromate, Na2CrO4
+       space   c m c m
+       a  5.861    b 9.259    c 7.138
+       rmax 7    core  Na2
+       atom
+         Na   0.0   0.20  0.25    Na1
+         Na   0.0   0.50  0.0     Na2
+         Cr   0.0   0.85  0.25
+         O    0.28  0.45  0.25    O1
+         O    0.0   0.25  0.57    O2
+       -------------------------------------------------
+
+
+       title Y2O3, cubic bixbyite structure
+       rmax=7.0   Space  I A 3
+       a=10.604  core = Y2
+       atom
+       ! At.type  x         y        z
+          Y      0.25      0.25     0.25     Y1
+          Y     -0.0314    0.0      0.25     Y2
+          O      0.389     0.150    0.377
+       -------------------------------------------------
+
+
+
+       title PbTiO3, distorted perovskite
+       Space  P 4 m m
+       a=3.885   c=4.139
+       rmax=7    core = Ti
+       atom
+       ! At.type  x        y       z      tag
+          Pb     0.0      0.0     0.0
+          Ti     0.5      0.5     0.5377
+          O      0.5      0.5     0.1118  axial
+          O      0.0      0.5     0.6174  planar
+       -------------------------------------------------
+
+
+       title  PbZrO3  distorted perovskite
+       a = 5.88     b = 11.78     c = 8.22    core = Pb1
+       rmax=5.0    Space   p b a m
+       atom
+       ! At.type  x        y       z      Tag
+        Pb      0.7064   0.1266   0.0     Pb1
+        Pb      0.7064   0.1266   0.5     Pb2
+        Zr      0.2423   0.125    0.25
+        O       0.271    0.156    0.0     O1
+        O       0.288    0.096    0.5     O2
+        O       0.032    0.2608   0.283   O3
+        O       0.0      0.5      0.206   O4
+        O       0.0      0.0      0.248   O5
+       -------------------------------------------------
+
+
+       title  Platinum Silicide, PtSi
+       title  P b m n in Wyckoff, just for the sake of confusion
+       a = 5.595     b = 3.603     c = 5.932    core = Pt
+       rmax=5.2    Space   p n m a
+       atom
+       ! At.type  x        y       z      Tag
+        Pt      0.010    0.250   0.195
+        Si      0.195    0.250   0.590
+       ----------------------------------------
+@end example
+
+
+@node High Temperature Superconductors. ,  , Binary and Trinary Compounds , Examples
+@section High Temperature Superconductors.
+
+
+Here are several examples of @code{atoms.inp} files for various
+High Tc superconductors. The crystallographic literature on this
+class of materials is quite large and there are significant structural
+differences even between similar materials. Two recommended resources
+for crystal information are @i{Copper Oxide Superconductors}
+by Poole, Datta, and Farach, Wiley-Interscience, New York (1988) and
+@i{Physical Properties of High Temperature Superconductors
+II}, ed. by Ginsberg, World Scientific (1990).
+
+
+@example
+          title YBCO: Y Ba2 Cu3 O7  (1-2-3 structure)
+          space P M M M
+          rmax=5.2              a 3.823   b 3.886 c 11.681
+          dwarf on   core = Cu1
+          atom
+          ! At.type   x        y       z      tag
+             Y       0.5      0.5     0.5
+             Ba      0.5      0.5     0.184
+             Cu      0        0       0        Cu1
+             Cu      0        0       0.356    Cu2
+             O       0        0.5     0        O1
+             O       0        0       0.158    O2
+             O       0        0.5     0.379    O3
+             O       0.5      0       0.377    O4
+          --------------------------------------------
+
+          title  Bi2 Sr2 Ca Cu2 O8  (2-2-1-2 structure)
+          space  F m m m
+          a=5.411   b=5.418   c=30.89     core = Cu
+          atom
+             Bi     0.0     0.0     0.20
+             Sr     0.0     0.5     0.11
+             Ca     0.0     0.5     0.0
+             Cu     0.0     0.0     0.05
+             O      0.25    0.25    0.05  O1
+             O      0.0     0.5     0.20  O2
+             O      0.0     0.0     0.13  O3
+          ----------------------------------------------------
+
+          title Pb2 Y Sr2 Cu3 O8 (2-1-2-3 structure)
+          space   P 4/m m m
+          a=3.813    c=15.76    core = Cu1
+          atom
+            Pb      0.5     0.5     0.39
+            Sr      0.0     0.0     0.22
+            Y       0.0     0.0     0.0
+            Cu      0.5     0.5     0.11  Cu1
+            Cu      0.0     0.0     0.5   Cu2
+            O       0.0     0.5     0.10  O1
+            O       0.5     0.5     0.25  O2
+            O       0.0     0.0     0.38  O3
+          ----------------------------------------------------
+
+          title   tetragonal Tl2 Ba2 Cu O6,  (2-2-0-1 structure)
+          space   I 4/m m m
+          a = 3.866  c = 23.239  rmax = 6.0  core = Cu
+          atom
+               Tl      0.5   0.5   0.20265
+               Ba      0.0   0.0   0.08301
+               Cu      0.5   0.5   0.0
+               O       0.0   0.5   0.0         O1
+               O       0.5   0.5   0.1168      O2
+               O       0.5   0.5   0.2889      O3
+          ----------------------------------------------------
+
+          title  Y Ba2 Cu4 O8  (1-2-4 structure)
+          space  C m m m
+          a=3.8415   b=3.8707   c=27.240   core = Cu1
+          atom
+          !   Type     x     y     z       tag
+               Y      0.5   0.5   0.0
+               Ba     0.5   0.5   0.1356
+               Cu     0.0   0.0   0.2127   Cu1
+               Cu     0.0   0.0   0.0614   Cu2
+               O      0.0   0.0   0.1454   O1
+               O      0.5   0.0   0.0524   O2
+               O      0.0   0.5   0.0528   O3
+               O      0.0   0.5   0.2181   O4
+@end example
+
+
+
+@c @node Index,  , Future, Top
+@c @unnumbered Index
+@c @printindex cp
+
+@shortcontents
+@contents
+@bye

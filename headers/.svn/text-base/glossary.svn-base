@@ -1,0 +1,69 @@
+c=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+c  this is a list of globaly or commonly used parameters and 
+c  variables with brief descriptions of their purposes
+c  () = dimension, [] = set of values, {} = alternate name
+c
+c=-=-=-=-=-=-=-=-=-=-=-=-=-= parameters =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+c  eps:    a small number for use in floating point logicals
+c  etok:   conversion between ev and invang
+c  iat:    maximum number of unique atoms
+c  natx:   maximum number of atoms in cluster
+c  ndopx:  maximum number of dopants at a site
+c  nfit:   maximum number of points for linear regression
+c  ngeomx: maximum number of one bounce flags
+c  ntitx:  maximum number of title lines
+c  nvals:  maximum number of parameters for linear regression
+c  nwdx:   maximum number of words for bwords
+c  nlogx:  maximum number of logic flags in array logic
+c  nexafs: maximum number of items calculated from mcmaster data
+c  vrsion: version number
+c  
+c=-=-=-=-=-=-=-=-=-=-=-=-=-= integers =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+c  iatom:  number of atoms in atom list
+c  ibasis: number of atoms in basis list
+c  ipt:    (iat), number of positions of a unique atom in unit cell
+c  iptful: (iat), number of positions of a unique atom in overfull cell
+c  imult:  (iat), multiplicity at each site
+c  ispa:   [1..230], number of space group in itxc
+c  isyst:  [1..8], identifies crystal system
+c  itot:   number of atoms found in cluster
+c  job:    counts complete runs through code with multiple inputs
+c  ngeom:  (ngeomx) one-bounce flags for geom.dat
+c  ns:     {also ng}, simple multiplicity at a point
+c  nsites: equal iatom or, if using basis, equals ibasis
+c  ntit:   (9), number of title lines
+c  
+c=-=-=-=-=-=-=-=-=-=-=-=-=-= logicals =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+c  vaxflg: true for compilation on vms, for open status of files
+c  stdout: true for stdin/stdout operation, false for disk operation
+c  expnd:  true to use expanded atoms list, false for normal
+c  logic:  (nlogx) array of various run control and diagnostic flags, 
+c          see arrays.map
+c  
+c=-=-=-=-=-=-=-=-=-=-=-=-=  characters  =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-= 
+c  core:   atomic symbol of central atom
+c  cnum:   used to write out numbers with messag
+c  dopant: (iat,ndopx) atomic symbols of atoms at site (main+dopants)
+c  edge:   k or l3 edge of core atom
+c  messg:  string sent to messag
+c  outfil: output file name
+c  spcgrp: space group of crystal
+C  title:  (ntitx), user input title lines
+c  
+c=-=-=-=-=-=-=-=-=-=-=-=-=-=-= reals =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
+c  ampslf: self-absorption amplitude correction
+c  atlis:  (natx,8), list of atoms in cluster, fractional, and cartesian
+c  cell:   (6), a,b,c,alpha,beta, and gamma of cell
+c  dmax:   radius of cluster
+c  fulcel: (iat,192,3), coordinates of atoms in overfull cell
+c  fs:     (3,3,24),
+c  gasses: (3) percent by pressure in i0 chamber of argon, krypton, nitrogen
+c  percnt: (iat,ndopx) percent substitution of dopants for replaced atoms
+c  exafs:  (10) array of values from mcamster calculation
+c  st:     (iat,192,3), fractioanl coords of points after bravais transl.
+c  trmtx:  (3,3), transformation matrix between cartesian and cell-axis
+c  ts:     (3,24), fractional positions of points before bravais transl.
+c  x:      (iat), fractional coordinate of unique atoms
+c  y:      (iat), fractional coordinate of unique atoms
+c  z:      (iat), fractional coordinate of unique atoms
+c 

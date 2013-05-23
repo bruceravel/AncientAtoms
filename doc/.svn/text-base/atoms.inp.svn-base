@@ -1,0 +1,11 @@
+title PbTiO3 10K,a=3.885,c=4.139 
+space P 4 m m 
+a=3.885         c=4.139         nitrogen = 0.08 
+index=true      rmax=4.2        core=ti 
+atom 
+! At.type x    y    z      tag 
+  Pb     0.0  0.0  0.0 
+  Ti     0.5  0.5  0.5377 
+  O      0.5  0.5  0.1118 axial 
+  O      0.0  0.5  0.6174 planar 
+------------------------------------------------- 

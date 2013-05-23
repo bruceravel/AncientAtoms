@@ -1,0 +1,62 @@
+This is Info file atoms.info, produced by Makeinfo version 1.68 from
+the input file atoms.texi.
+
+INFO-DIR-SECTION Bruce Ravel's Own Documentation
+START-INFO-DIR-ENTRY
+* Atoms: (atoms).           Atoms program documentation
+END-INFO-DIR-ENTRY
+
+
+Indirect:
+atoms.info-1: 243
+atoms.info-2: 49795
+atoms.info-3: 98874
+
+Tag Table:
+(Indirect)
+Node: Top243
+Node: Introduction993
+Node: Overview1132
+Node: 2.504589
+Node: Keywords5735
+Node: General Format5982
+Node: List of Keywords7319
+Node: Explanations of Keywords9733
+Node: Site Tags19356
+Node: Basis v. Atom22236
+Node: Dopants24917
+Node: geom.dat26945
+Node: Space Groups28471
+Node: Notation Conventions28734
+Node: Positions31144
+Node: Special Lattice Types32672
+Node: Bravais34257
+Node: Low Symmetry35461
+Node: Rhombohedral38625
+Node: the Shift Keyword39665
+Node: Corrections43216
+Node: Absorption Calculation44296
+Node: McMaster Correction45596
+Node: I0 Correction.47138
+Node: Self-Absorption Correction.48324
+Node: Worked Example49795
+Node: Program Notes55952
+Node: Acknowledgments56241
+Node: Comments on the Fortran Code57628
+Node: What is new since version 2.4261084
+Node: Naming Conventions62699
+Node: Obtaining63409
+Node: Bibliography64394
+Node: Denoting Space Groups66082
+Node: A Quick Review of Crystallography67242
+Node: Hermann-Maguin71851
+Node: Schoenflies76103
+Node: The Hermann-Maguin Notation78355
+Node: The Schoenflies Notation90627
+Node: Examples93954
+Node: Pure Elements94772
+Node: Common Lattice Types98874
+Node: Binary and Trinary Compounds101927
+Node: High Temperature Superconductors.110111
+
+End Tag Table

@@ -1,0 +1,109 @@
+#!/usr/bin/perl -w
+# replace "include" lines with the file to be included, works recursively.
+# special support for *.f(or), *.tex, *.texi(nfo), *.inp files
+
+($opt_h,$opt_x,$opt_f,$noinclude,$lang)=(0,0,0,0,0);
+require "getopts.pl";
+&Getopts('x:f:h');
+
+($opt_x) && ($noinclude = $opt_x);   ## files NOT to uninclude
+($opt_f) && ($lang = $opt_f);        ## specify file type
+
+$usage = <<USAGE;
+
+uninclude [-x filenames] [-f filetype] [-h] file
+    remove include statements from source code and replace them with
+    the included file.  fortran, uwxafs input files, tex/latex, and
+    texinfo files are supported.
+
+    the -f flag is used to specify the file type when it will not be
+    correctly identified from the file extension.  Recognized
+    arguments for -f are "f77", "tex", "texi", and "inp" for fortran,
+    tex/latex, texinfo, and input files respectively.
+
+    the -x flag is used to specify files NOT to include.  filenames is
+    a comma separated list of names of include files
+
+    the -h flag prints this message and exits
+
+USAGE
+    ;
+
+unless (@ARGV) {
+    print $usage;
+    exit;
+}
+if ($opt_h) {
+    print $usage;
+    exit;
+}
+
+
+$i = 0;
+foreach $file (@ARGV) {
+    ## look for -f switch or for file extension to identify file type
+    SWITCH : {
+	## fortran
+	( ($lang eq "f77")  || ($file =~ /.*\.f(or)?$/) ) && do {
+	    ($exten, $comment, $lang) = (""     , "c ",   "f77");
+	    last SWITCH;
+	} ;
+	## tex and latex
+	( ($lang eq "tex")  || ($file =~ /.*\.tex$/) ) && do {
+	    ($exten, $comment, $lang) = (".tex" , "%% ",   "tex");
+	    last SWITCH;
+	} ;
+	## texinfo
+	( ($lang eq "texi") || ($file =~ /.*\.texi(nfo)?$/) ) && do {
+	    ($exten, $comment, $lang) = (""     , "\@c ",  "texi");
+	    last SWITCH;
+	} ;
+	## default is input file (e.g. feffit)
+	($exten, $comment, $lang) = (""     , "# ",   "inp");
+    }
+   &parseinclude($file, $i);
+}
+sub parseinclude {
+    $_[1]++;
+    local($filehandle) = $_[1];
+    open($filehandle, $_[0]) || die "couldn't open $_[0]\n";
+    while (<$filehandle>) {
+	$newfile = "";
+				# get name of include file
+	if (($lang eq "inp") &&
+	    (/^\s*(\s*)in(clude|put)\s*["{'\s*]([^"{'\s]*)(["}'\s])\s*/o)) {
+	    $newfile = $3 . $exten;
+
+	} elsif (($lang eq "f77") &&
+             (/^[     ](\s*)in(clude|put)\s*["{'\s*]([^"{'\s]*)(["}'\s])\s*/o)) {
+	    $newfile = $3 . $exten;
+
+	}  elsif (($lang eq "tex") &&
+		  (/^\s*\\in(clude|put)\s*["{'\s*]([^"{'\s]*)(["}'\s])\s*/o)) {
+	    $newfile = $2;
+	    chop $newfile  if ($3) ;
+	    $newfile .=  $exten;
+
+	}  elsif (($lang eq "texi") &&
+		  (/^\s*\@in(clude|put)\s*["{'\s*]([^"{'\s]*)(["}'\s])\s*/o)) {
+	    $newfile = $2;
+	    chop $newfile  if ($3) ;
+	    $newfile .=  $exten;
+	}
+				# insert include file
+	if ($newfile) {
+	    ##unless (grep /\b$newfile\b/, @noinclude) {
+	    ## crude hack to make this work under perl 4 also, grrr...
+	    unless ($noinclude =~ /\b$newfile\b/) {
+		print $comment, $_;
+		&parseinclude($newfile, $_[1]);
+	    } else {
+		print;
+	    }
+	} else {
+	    print;
+	}
+    }
+    close($filehandle);
+    $_[1]--;
+}

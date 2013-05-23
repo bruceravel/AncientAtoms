@@ -1,0 +1,24 @@
+c----------------------------------------------------------------------
+c			     Error Codes
+c
+c  All error messages are of 1 or more lines.  They begin with three
+c  asterixes (***) followed by a token and end with a period
+c  followed by a dash (.-).  If an input file keyword appears in the
+c  message, it should be surrounded by double quotes.
+c
+c  When an error is caught, it should set an error code.  The codes are
+c    0   no error (and no message)
+c    1   informational (tokens: Caution  Position  Ending)
+c    2   warning (token: Warning)
+c    3   error (token: Error)
+c
+c  Informational messages are those that do not indicate a problem,
+c    but do indicate something the user should know about.  Currently
+c    used informational messages are for debugging messages,
+c    positional messages, impending early termination of the program,
+c    and non-serious cautions.
+c  Warnings are for things that should not impede the progress of the
+c    program, but which may produce output that is not what the user
+c    intended.  Warnings include unknown keywords and exceeded parameters.
+c  Errors are things the preclude the continuation of the program.
+c----------------------------------------------------------------------

@@ -1,0 +1,97 @@
+c    1.0    got it working
+c    2.0    satisfied copyright criteria in cluster expansion routines
+c    2.1    added indexing (8/92)
+c    2.2    added absorption length (9/92)
+c    2.3    improved handling of spc grp notation, fixed bcc bug,
+c           fixed floating point logic (1/93)
+c    2.4    handle bases, atom list option, shift (3/93), mcmaster
+c           correction (4/93)
+c  approaching 3 too quickly, switch to hundredths
+c    2.41   mcmaster correction corrected, i0 and self absorption
+c           corrections, new cluster expansion routine, overfull
+c           unit cell, simple dopant, more error checking on input, 
+c           multiple title lines, untab, shift warning and
+c           version number in feff.inp (6/93)
+c    2.42   modularized in anticipation of dafs applications (6/93)
+c           general housekeeping, tags, improved dopants, core keyword 
+c           required, case insensitivity in code, geom.dat + subshell 
+c           sorting, self-absorption bug fixed (8/93 and 10/93) 
+c    2.42.a lower case and true robustness, revamped input parsing for 
+c           better error checking, handle overlapping atoms better, hex 
+c           C, V symmetry groups, corrected tri/hex bug in atinpt, no 
+c           mcmaster for Z<13, diagnostic messages from input file (1/94)
+c           corrected bug in dopants,
+c           more housekeeping (2/94) calculate delta mu from core rather
+c           than total mu and reinstate mcmaster for Z<13 (3/94)
+c           silly bug in atinpt that trashed nonorthoganal groups fixed,
+c           also improved error messages (3/94)
+c    2.42.b fixed mishandling of rhombohedral groups (6/94)
+c    2.42.c pass parameters as arguments for easier hacking, had to pass
+c           some memory space to certain subroutines, fixed a bug 
+c           in subroutine ref that was affecting geout, 72 character
+c           names for output files, pass io number for feff.inp, 
+c           l1&l2, move origin into readin (8/94)
+c    2.42.d contains full fuctionality of 2.43.c except for dafs apps (1/95)
+c    2.42.e contains full fuctionality of 2.43.d except for dafs apps (2/95)
+c    2.42.f contains full fuctionality of 2.43.f except for dafs apps 
+c     & up   parallel development to 2.43 without dafs apps
+c
+c    2.43   tabulate chantler's data for interpolation, wrote fcal -- 
+c           an engine for using chantler's data, wrote a0.f for reading
+c           chantler and cromer-mann and making a0, write a0 as a five 
+c           column file suitable for feffit, no energy corrections (8/94)
+c    2.43.b new a0 filename, allow neg. q's, fix null atoms handling, 
+c           fixed mishandling of trigonal (not rhomb.) groups (9/94)  
+c           added warning message for low symmetry cells, added my name 
+c           to feff.inp and run time messages(11/94), fix some error
+c           messages (1/95)
+c    2.43.c full sasaki tables, fixed espilon bug in multip, added p1 
+c           option  (1/95)
+c    2.43.d after UWXAFS 3.0 release -- fixed bug with dmax < min distance
+c           (2/95)
+c    skip subversion e
+c    2.43.f fixed bug in self-absorption calculation, added krypton to I0,
+c           geom.dat and feff.dat write same number of atoms (4/95)
+c    2.43.g no file name conflicts, much improved internal documentation
+c           (7/95)
+c
+c    2.44. & 2.45.  handles different settings of low symmetry crystals,
+c                   improve handling of schoenflies notation, better error
+c                   messages for mcmaster calculations (8/95), compile time
+c                   switch for stdin/stdout (9/95), typo in syschk, in
+c                   multip minor bug re. imult for atom with coord=1 
+c                   edge energy in feff.inp, allow L1&l2 (10/95)
+c    2.44 & up parallels 2.45 without dafs apps
+c    2.45.a fixed bug in f.p. comparisons in indexing, five digits in 
+c           feff.inp, geom.dat no longer depends on scratch file (11/95)
+c    2.45.b central atom gets tag, reflect.dat (12/95)
+c
+c    2.46 & up parallels 2.47 without dafs apps and extended atoms list
+c    2.47   tighten modularity & combine variables into arrays, fix problem
+c           with nofx and polyft by explicitly carrying around misc.f file,
+c           information for fluorescence normalization,  move atoms list 
+c           parsing to external subroutine to allow expanded atoms list, 
+c           rmax card to 5 digits + 0.00001, fixed potential numerical 
+c           problem in metric (2/96) made groups module (3/96) angles in  
+c           monoclinic settings, 
+c    2.4?.b rework makefile using uninclude perl script and unzipped
+c           modules, added xanes card 
+c    2.4?.c added keywords "feff8" and "correction", added optional
+c           feff8 output (BR Jan 16 1998)
+c
+c    to do: new crystal, fix monoclinic angles
+c
+c    2.50   change structure of source tree, use libraries and include 
+c           files in a more sensible manner, (BR Mar  2 1998) (goals
+c           for 2.50pre1: modularize crystl+groups+clustr, remove logic()
+c
+c    changes in functionality from versions before 2.50
+c    1. no longer support more than one job per file
+c    2. consistent message syntax for post-processing purposes
+c
+c    goals for 2.50pre2: clean up remaining code, allow spcgrp=ispa,
+c                        end keyord wade through code cleaning up
+c                        run-time messages
+c    goals for 2.50pre3: begin work on monoclinic
+c    other goals for 2.50: revise document, write crystl user guide,
+c       more output types, see wishlist

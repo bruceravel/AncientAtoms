@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="4"
+   name=""
+   committed-date="2005-03-15T19:35:04.003506Z"
+   url="svn+ssh://bruce@polyhymnia.mr.aps.anl.gov/home/bruce/svn/atoms/trunk/groups"
+   last-author="bruce"
+   kind="dir"
+   uuid="c1503ff6-5ef2-0310-a0cc-9db33fec6db0"
+   revision="5"/>
+<entry
+   committed-rev="1"
+   name="spcchk.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="651bf5bac8f38f37733c56c767f5a5dc"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="atspec.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="8ed7434c5492d06472850dc9a20c4bb1"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="groups.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="3fc78887e38ee69993ab0d6c6c0565c2"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="systm.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="4dcf2fc7e0bff93f5509cd001fcee7aa"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="rh2hex.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="86027e090d30f8e830319019520cc16d"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="schfix.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="6298cf56339acdb8beb7674fa4f14d6b"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="settng.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="b72ad697bc37421513ff14ffdb937052"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="origin.f"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="c87e452b050522572be617f17454be0f"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+<entry
+   committed-rev="1"
+   name="Makefile"
+   text-time="2005-04-14T20:46:42.000000Z"
+   committed-date="2005-03-15T19:25:03.824126Z"
+   checksum="080b5e8ca0024fe29e1b371912d52e9a"
+   last-author="bruce"
+   kind="file"
+   prop-time="2005-04-14T20:46:42.000000Z"/>
+</wc-entries>

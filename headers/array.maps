@@ -1,0 +1,69 @@
+c -*- mode: fortran -*-
+c Logical variables:
+c 
+c   explanation is for true setting
+c 
+c   run control flags:
+c         logic(1):       lend    teminate program after processing latest info
+c         logic(2):       lbasis  using basis not atoms list
+c         logic(3):       lfluor  do fluorescence corrections
+c         logic(4):       lindex  do indexing
+c         logic(5):       ldwarf  heh heh heh!
+c         logic(6):       lgeom   write geom.dat
+c         logic(7):       lfeff   run module output
+c         logic(8):       lp1     write p1.dat
+c         logic(9):       lunit   write unit.dat
+c         logic(10):      ldafs   do dafs calculations
+c         logic(11):      lrefl   write reflect.dat
+c         logic(12):      lfex    feff.inp already exists
+c         logic(13):      lgex    geom.dat already exists
+c 
+c   diagnostic flags:
+c         logic(14):      lmm     write mcmaster diagnostic
+c         logic(15):      lself   write self-absorption diagnostic
+c         logic(16):      li0     write i0 diagnostic
+c         logic(17):      lf      write f(e) diagnostic
+c
+c   more run control flags:
+c	  logic(18):	  lxanes  write convenient xanes messages
+c	  logic(19):	  lfeff8  write convenient feff8 messages
+c 
+c   positional message flags:
+c         logic(20):      lmod    write message at beginning of modules
+c         logic(21):      lcrys   write messages in crystl
+c         logic(22):      lmcm    write messages in mcmast
+c         logic(23):      lun     write messages in unit
+c         logic(24):      la0     write messages in a0
+c         logic(25):      lclus   write messages in clustr
+c         logic(26):      lout    write messages in output
+c
+c   error message flags:
+c         logic(27):              write messages from syschk in crystl
+c
+c   more run control flags:
+c         logic(28):      lmcm    skip mcmaster cals if true
+c 
+c   new flags since version 2.??:
+c 
+c 
+c 
+c fluorescence gasses
+c 
+c         gasses(1)       percentage of argon
+c         gasses(2)       percentage of krypton
+c         gasses(3)       percentage of nitrogen
+c 
+c 
+c various mcmaster calculations:
+c 
+c         exafs(1):       amu
+c         exafs(2):       delmu
+c         exafs(3):       spgrav
+c         exafs(4):       sigmm
+c         exafs(5):       qrtmm
+c         exafs(6):       ampslf
+c         exafs(7):       sigslf
+c         exafs(8):       qrtslf
+c         exafs(9):       sigi0
+c         exafs(10):      qrti0
+
