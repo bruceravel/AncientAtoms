@@ -1,8 +1,8 @@
 # compilation information for LINUX using g77
 
-CC = g77
-# CC = g77 -O2 -ffast-math -m486 -pedantic -Wall -g -pg
-CFLAGS = -O2 -ffast-math -m486 -pedantic -Wall -g
+CC = gfortran -O2 -ffast-math -pedantic -Wall -g -std=legacy
+LFLAGS =
+CFLAGS =
 
 # -O2:	optimization
 # -ffast-math: another optimization flag

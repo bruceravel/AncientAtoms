@@ -1,7 +1,6 @@
 # compilation information for LINUX using g77
 
-CC = g77 -O2 -ffast-math -m486 -pedantic -Wall -g
-# CC = g77 -O2 -ffast-math -m486 -pedantic -Wall -g -pg
+CC = gfortran -O2 -ffast-math -pedantic -Wall -g -std=legacy
 LFLAGS =
 CFLAGS =
 

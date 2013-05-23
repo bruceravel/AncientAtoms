@@ -3,9 +3,8 @@ VNUM = 250
 BINDIR = ./
 
 # compilation information for LINUX using g77
-F77 = g77
-#CFLAGS = -O2 -ffast-math -m486 -Wall -pedantic -g
-CFLAGS = -O2 -ffast-math -m486 -Wall -pedantic -g
+F77 = gfortran
+CFLAGS = -O2 -ffast-math -Wall -pedantic -g -std=legacy
 LFLAGS =
 
 # -O2:	optimization

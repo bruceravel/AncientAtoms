@@ -1,0 +1,6 @@
+*.a
+*.o
+feff.inp
+geom.dat
+README.html
+atoms
